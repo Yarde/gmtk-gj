@@ -1,0 +1,19 @@
+{
+    "name": "Yarde.DependencyInjection",
+    "rootNamespace": "Yarde",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:15d6fc50015a47cf980bcdba6720bf99",
+        "GUID:2c53b00dabce4645abb59e58fcd39cc3",
+        "GUID:395f859b7f8b423f8bfca9036a2280be"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

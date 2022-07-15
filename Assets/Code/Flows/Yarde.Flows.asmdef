@@ -1,0 +1,22 @@
+{
+    "name": "Yarde.Flows",
+    "rootNamespace": "Yarde",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:3a565c2240b041e683551c39deda21a3",
+        "GUID:2c53b00dabce4645abb59e58fcd39cc3",
+        "GUID:15d6fc50015a47cf980bcdba6720bf99",
+        "GUID:df8d4d3846864b788204aade334093fe"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

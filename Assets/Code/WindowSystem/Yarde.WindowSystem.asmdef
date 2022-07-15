@@ -1,0 +1,21 @@
+{
+    "name": "Yarde.WindowSystem",
+    "rootNamespace": "Yarde",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:98ebfedfc7e463d40a47ee8ebcb4eae2",
+        "GUID:3a565c2240b041e683551c39deda21a3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
