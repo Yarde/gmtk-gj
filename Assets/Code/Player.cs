@@ -1,13 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Yarde.Utils.Extensions;
 
 namespace Yarde
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField] private float angleIncrement = 5;
+        [SerializeField] private int moveDelayInMillis = 10;
+        
         private bool _isMoving;
-        private const float SPEED = 3;
 
         private void Update()
         {
@@ -30,10 +31,10 @@ namespace Yarde
             Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
-            for (int i = 0; i < 90 / SPEED; i++)
+            for (int i = 0; i < 90 / angleIncrement; i++)
             {
-                transform.RotateAround(anchor, axis, SPEED);
-                await UniTask.Delay(0.01f.ToMilliseconds());
+                transform.RotateAround(anchor, axis, angleIncrement);
+                await UniTask.Delay(moveDelayInMillis);
             }
 
             _isMoving = false;

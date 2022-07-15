@@ -2189,10 +2189,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1316439306}
+  - component: {fileID: 1316439307}
   - component: {fileID: 1316439311}
   - component: {fileID: 1316439310}
   - component: {fileID: 1316439309}
-  - component: {fileID: 1316439307}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2233,6 +2233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214bb92f34b64ac784558b9707562922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  angleIncrement: 10
+  moveDelayInMillis: 20
 --- !u!65 &1316439309
 BoxCollider:
   m_ObjectHideFlags: 0
