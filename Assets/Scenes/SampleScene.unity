@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angleIncrement: 10
   moveDelayInMillis: 20
-  startingLives: 3
+  startingHealth: 3
 --- !u!65 &1316439309
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2781,6 +2781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d12f0a204e55470699373dbcf495f98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: {x: 1, y: 1}
 --- !u!212 &1590789990
 SpriteRenderer:
   m_ObjectHideFlags: 0

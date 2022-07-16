@@ -2,9 +2,10 @@
 
 namespace Yarde.GameBoard
 {
-    public abstract class CollectibleBase : MonoBehaviour
+    public abstract class CollectibleBase : BoardObject
     {
         public abstract CollectibleReward Collect();
+        
     }
     public class CollectibleReward
     {

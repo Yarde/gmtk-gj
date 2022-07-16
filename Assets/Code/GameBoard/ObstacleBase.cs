@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Yarde.GameBoard
+﻿namespace Yarde.GameBoard
 {
-    public abstract class ObstacleBase : MonoBehaviour
+    public abstract class ObstacleBase : BoardObject
     {
         
     }

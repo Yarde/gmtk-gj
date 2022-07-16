@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using VContainer;
 using Yarde.Utils.Logger;
@@ -38,13 +40,14 @@ namespace Yarde.GameBoard
             bool free = CheckIfPathIsFree(arg);
             if (free)
             {
-                EnemyBase kill = CheckKilledEnemy(arg);
-                if (kill != null)
+                EnemyBase killedEnemy = CheckKilledEnemy(arg);
+                UniTask roll = _player.Roll(arg);
+                if (killedEnemy != null)
                 {
-                    Destroy(kill.gameObject);
-                    _player.OnEnemyKilled(kill);
+                    await _player.OnEnemyKilled(killedEnemy);
+                    await killedEnemy.Kill();
                 }
-                await _player.Roll(arg);
+                await roll;
             }
             else
             {
@@ -56,6 +59,7 @@ namespace Yarde.GameBoard
 
         private async UniTask MakeEnemyTurn()
         {
+            var enemyMoves = new List<UniTask>();
             foreach (EnemyBase enemy in _enemies)
             {
                 Vector3 direction = enemy.GetEnemyMove();
@@ -65,13 +69,16 @@ namespace Yarde.GameBoard
                     if (hit)
                     {
                         _player.TakeDamage(enemy.Damage);
+                        enemyMoves.Add(enemy.MakeHalfMove(direction));
                     }
                     else
                     {
-                        enemy.MakeMove(direction);
+                        enemyMoves.Add(enemy.MakeMove(direction));
                     }
                 }
             }
+
+            await UniTask.WhenAll(enemyMoves);
         }
 
         private EnemyBase CheckKilledEnemy(Vector3 vector3)
@@ -79,8 +86,7 @@ namespace Yarde.GameBoard
             Vector3 destination = _player.transform.position + vector3;
             foreach (EnemyBase enemy in _enemies)
             {
-                float distance = Vector3.Distance(destination, enemy.transform.position);
-                if (distance < 0.5f)
+                if (enemy.CheckCollision(destination, _player.Size))
                 {
                     this.Log($"Enemy: {enemy.name} killed!");
                     return enemy;
@@ -94,8 +100,7 @@ namespace Yarde.GameBoard
             Vector3 destination = _player.transform.position + vector3;
             foreach (ObstacleBase obstacle in _obstacles)
             {
-                var distance = Vector3.Distance(destination, obstacle.transform.position);
-                if (distance < 0.5f)
+                if (obstacle.CheckCollision(destination, _player.Size))
                 {
                     this.Log($"Path Blocked by Obstacle: {obstacle.name}");
                     return false;
@@ -108,11 +113,10 @@ namespace Yarde.GameBoard
         {
             foreach (CollectibleBase collectible in _collectibles)
             {
-                var distance = Vector3.Distance(_player.transform.position, collectible.transform.position);
-                if (distance < 0.5f)
+                if (collectible.CheckCollision(_player.transform.position, _player.Size))
                 {
                     this.Log($"Collectible found: {collectible.name}");
-                    _player.CollectItem(collectible.Collect());
+                    await _player.CollectItem(collectible.Collect());
                 }
             }
         }

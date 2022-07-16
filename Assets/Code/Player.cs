@@ -12,6 +12,7 @@ namespace Yarde
         [SerializeField] private float startingHealth = 3;
 
         private float _healthPoints;
+        public Vector2 Size => new Vector2(1, 1);
 
         private void Awake()
         {
@@ -58,12 +59,12 @@ namespace Yarde
             }
         }
 
-        public void OnEnemyKilled(EnemyBase kill)
+        public async UniTask OnEnemyKilled(EnemyBase kill)
         {
             // todo add some points of other shit
         }
 
-        public void CollectItem(CollectibleReward collect)
+        public async UniTask CollectItem(CollectibleReward collect)
         {
             // todo apply collected reward
         }
