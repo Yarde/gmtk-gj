@@ -13,7 +13,7 @@ namespace Yarde
         {
             Vector3 destination = transformToFollow.position + offset;
             Vector3 smoothed = Vector3.Lerp(transform.position, destination, smoothSpeed * Time.deltaTime);
-            transform.position = smoothed.WithY(smoothed.y);
+            transform.position = smoothed.WithY(transform.position.y);
         }
     }
 }

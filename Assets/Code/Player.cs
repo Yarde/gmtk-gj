@@ -1,42 +1,72 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Yarde.Utils.Extensions;
+using Yarde.GameBoard;
+using Yarde.Utils.Logger;
 
 namespace Yarde
 {
     public class Player : MonoBehaviour
     {
-        private bool _isMoving;
-        private const float SPEED = 3;
+        [SerializeField] private float angleIncrement = 5;
+        [SerializeField] private int moveDelayInMillis = 10;
+        [SerializeField] private float startingHealth = 3;
 
-        private void Update()
+        private float _healthPoints;
+        public Vector2 Size => new Vector2(1, 1);
+
+        private void Awake()
         {
-            if (_isMoving)
-            {
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.A)) { Roll(Vector3.left).Forget(); }
-            if (Input.GetKeyDown(KeyCode.D)) { Roll(Vector3.right).Forget(); }
-            if (Input.GetKeyDown(KeyCode.W)) { Roll(Vector3.forward).Forget(); }
-            if (Input.GetKeyDown(KeyCode.S)) { Roll(Vector3.back).Forget(); }
-
+            _healthPoints = startingHealth;
         }
 
-        private async UniTask Roll(Vector3 direction)
+        public async UniTask Roll(Vector3 direction)
         {
-            _isMoving = true;
-
             Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
-            for (int i = 0; i < 90 / SPEED; i++)
+            for (int i = 0; i < 90 / angleIncrement; i++)
             {
-                transform.RotateAround(anchor, axis, SPEED);
-                await UniTask.Delay(0.01f.ToMilliseconds());
+                transform.RotateAround(anchor, axis, angleIncrement);
+                await UniTask.Delay(moveDelayInMillis);
             }
+        }
 
-            _isMoving = false;
+        public async UniTask HalfRoll(Vector3 direction)
+        {
+            Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
+            Vector3 axis = Vector3.Cross(Vector3.up, direction);
+
+            for (int i = 0; i < 45 / angleIncrement; i++)
+            {
+                transform.RotateAround(anchor, axis, angleIncrement);
+                await UniTask.Delay(moveDelayInMillis);
+            }
+            
+            for (int i = 0; i < 45 / angleIncrement; i++)
+            {
+                transform.RotateAround(anchor, axis, -angleIncrement);
+                await UniTask.Delay(moveDelayInMillis);
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _healthPoints -= damage;
+
+            if (_healthPoints <= 0)
+            {
+                this.LogError("Game Lost!");
+            }
+        }
+
+        public async UniTask OnEnemyKilled(EnemyBase kill)
+        {
+            // todo add some points of other shit
+        }
+
+        public async UniTask CollectItem(CollectibleReward collect)
+        {
+            // todo apply collected reward
         }
     }
 }
