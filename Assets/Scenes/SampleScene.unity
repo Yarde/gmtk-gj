@@ -1040,6 +1040,28 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1500152532}
     m_Modifications:
+    - target: {fileID: 1721093645068471298, guid: ae39bbed6a993ff4c903af558704ee6b,
+        type: 3}
+      propertyPath: damage
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721093645068471298, guid: ae39bbed6a993ff4c903af558704ee6b,
+        type: 3}
+      propertyPath: sprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721093645068471298, guid: ae39bbed6a993ff4c903af558704ee6b,
+        type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 902775872, guid: 42d2ad3d2ebca28409f813cc7333a818,
+        type: 3}
+    - target: {fileID: 1721093645068471298, guid: ae39bbed6a993ff4c903af558704ee6b,
+        type: 3}
+      propertyPath: sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: -1089395075, guid: 42d2ad3d2ebca28409f813cc7333a818,
+        type: 3}
     - target: {fileID: 2419326620489002906, guid: ae39bbed6a993ff4c903af558704ee6b,
         type: 3}
       propertyPath: m_Name
