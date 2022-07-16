@@ -16,6 +16,7 @@ namespace Yarde.GameBoard
         [SerializeField] private bool moveLoseLive;
         private CollectibleBase[] _collectibles;
         private EnemyBase[] _enemies;
+        private ExitLevel _exitLevel;
 
         [Inject] private InputManager _inputManager;
 
@@ -29,6 +30,7 @@ namespace Yarde.GameBoard
             _obstacles = GetComponentsInChildren<ObstacleBase>();
             _enemies = GetComponentsInChildren<EnemyBase>();
             _collectibles = GetComponentsInChildren<CollectibleBase>();
+            _exitLevel = FindObjectOfType<ExitLevel>();
         }
 
         private void Start()
@@ -69,6 +71,11 @@ namespace Yarde.GameBoard
         private async UniTask MakePlayerTurn(Vector3 direction)
         {
             this.LogVerbose($"Top side of dice is {_player.TopSide}");
+            if (IsExitLevel(direction))
+            {
+                await UniTask.WhenAll(_exitLevel.LoadNextLevel(), _player.Roll(direction));
+                return;
+            }
             if (CheckIfPathIsFree(_player.transform.position + direction, _player.Size))
             {
                 var attackedEnemy = CheckAttackedEnemy(direction);
@@ -85,7 +92,7 @@ namespace Yarde.GameBoard
                 if (touchedObstacle != null)
                 {
                     await UniTask.WhenAll(touchedObstacle.OnTouch(), _player.HalfRoll(direction));
-                    
+
                     _obstacles = _obstacles.Where(e => e != touchedObstacle).ToArray();
                 }
             }
@@ -161,6 +168,14 @@ namespace Yarde.GameBoard
                 }
 
             return null;
+        }
+
+        private bool IsExitLevel(Vector3 vector3)
+        {
+            var destination = _player.transform.position + vector3;
+            if (!_exitLevel || !_exitLevel.CheckCollision(destination, _player.Size)) return false;
+            this.Log("Exit Level");
+            return true;
         }
 
         private bool CheckIfPathIsFree(Vector3 destination, Vector2 size)
