@@ -17,7 +17,13 @@ namespace Yarde
         public override Vector3 GetEnemyMove()
         {
             _targetPosition = _player.transform.position;
-            return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
+            var delta = _targetPosition - transform.position;
+            var perpendicularTargetPosition = _targetPosition;
+            if (Mathf.Abs(delta.x) - Mathf.Abs(delta.z) > 0)
+                perpendicularTargetPosition.z = transform.position.z;
+            else
+                perpendicularTargetPosition.x = transform.position.x;
+            return Vector3.MoveTowards(transform.position, perpendicularTargetPosition, movementSpeed);
         }
 
         public override async UniTask Kill()
