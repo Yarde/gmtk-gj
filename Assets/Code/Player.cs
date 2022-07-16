@@ -61,13 +61,13 @@ namespace Yarde
             Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
-            for (int i = 0; i < 45 / angleIncrement; i++)
+            for (int i = 0; i < 15 / angleIncrement; i++)
             {
                 transform.RotateAround(anchor, axis, angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
             }
             
-            for (int i = 0; i < 45 / angleIncrement; i++)
+            for (int i = 0; i < 15 / angleIncrement; i++)
             {
                 transform.RotateAround(anchor, axis, -angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
