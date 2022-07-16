@@ -12,8 +12,8 @@ namespace Yarde.GameBoard.Enemies
         [SerializeField] private float moveDelayInSec = 1;
         [SerializeField] private float movementSpeed = 1;
         private Vector3 _targetPosition;
-        private int queueDirection = 1;
-        private int waypointIndex;
+        private int _queueDirection = 1;
+        private int _waypointIndex;
 
         private void Start()
         {
@@ -23,33 +23,27 @@ namespace Yarde.GameBoard.Enemies
 
         private void SetInitValues()
         {
-            transform.position = waypoints[waypointIndex].position;
-            waypointIndex++;
-            _targetPosition = waypoints[waypointIndex].position;
+            transform.position = waypoints[_waypointIndex].position;
+            _waypointIndex++;
+            _targetPosition = waypoints[_waypointIndex].position;
         }
 
         private void CheckWaypoint()
         {
-            if (waypointIndex == waypoints.Count - 1)
-                queueDirection = -1;
-            if (waypointIndex == 0)
-                queueDirection = 1;
+            if (_waypointIndex == waypoints.Count - 1)
+                _queueDirection = -1;
+            if (_waypointIndex == 0)
+                _queueDirection = 1;
             if (transform.position == _targetPosition)
             {
-                waypointIndex += queueDirection;
-                _targetPosition = waypoints[waypointIndex].position;
+                _waypointIndex += _queueDirection;
+                _targetPosition = waypoints[_waypointIndex].position;
             }
-        }
-
-        private Vector3 FollowPath()
-        {
-            var result = Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
-            return result;
         }
 
         public override Vector3 GetEnemyMove()
         {
-            return FollowPath();
+            return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);;
         }
 
         public override bool CheckPlayerHit(Vector3 direction)
@@ -60,7 +54,8 @@ namespace Yarde.GameBoard.Enemies
 
         public override UniTask Kill()
         {
-            throw new NotImplementedException();
+            Destroy(gameObject);
+            return UniTask.CompletedTask;
         }
 
         public override async UniTask MakeMove(Vector3 direction)
@@ -75,7 +70,6 @@ namespace Yarde.GameBoard.Enemies
             var newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec/2);
             await transform.DOMove(prevPosition, moveDelayInSec/2);
-            CheckWaypoint();
         }
     }
 }
