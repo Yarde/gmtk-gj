@@ -3,6 +3,7 @@ using VContainer;
 using VContainer.Unity;
 using Yarde.Code.Flows;
 using Yarde.EventDispatcher;
+using Yarde.GameBoard;
 using Yarde.WindowSystem;
 using Yarde.WindowSystem.BlendProvider;
 using Yarde.WindowSystem.CanvasProvider;
@@ -14,6 +15,8 @@ namespace Yarde.DependencyInjection
     {
         [SerializeField] private BlendViewBase blendViewBase;
         [SerializeField] private CanvasManagerBase canvasManagerBase;
+        [SerializeField] private InputManager inputManager;
+        [SerializeField] private Player player;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -39,6 +42,8 @@ namespace Yarde.DependencyInjection
         {
             builder.RegisterComponent(blendViewBase);
             builder.RegisterComponent(canvasManagerBase);
+            builder.RegisterComponent(inputManager);
+            builder.RegisterComponent(player);
         }
     }
 }

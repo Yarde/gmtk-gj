@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Yarde.Utils.Logger;
 
 namespace Yarde
 {
@@ -7,27 +8,17 @@ namespace Yarde
     {
         [SerializeField] private float angleIncrement = 5;
         [SerializeField] private int moveDelayInMillis = 10;
-        
-        private bool _isMoving;
+        [SerializeField] private int startingLives = 3;
 
-        private void Update()
+        private int _livePoints;
+
+        private void Awake()
         {
-            if (_isMoving)
-            {
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.A)) { Roll(Vector3.left).Forget(); }
-            if (Input.GetKeyDown(KeyCode.D)) { Roll(Vector3.right).Forget(); }
-            if (Input.GetKeyDown(KeyCode.W)) { Roll(Vector3.forward).Forget(); }
-            if (Input.GetKeyDown(KeyCode.S)) { Roll(Vector3.back).Forget(); }
-
+            _livePoints = startingLives;
         }
 
-        private async UniTask Roll(Vector3 direction)
+        public async UniTask Roll(Vector3 direction)
         {
-            _isMoving = true;
-
             Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
@@ -36,8 +27,34 @@ namespace Yarde
                 transform.RotateAround(anchor, axis, angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
             }
+        }
 
-            _isMoving = false;
+        public async UniTask HalfRoll(Vector3 direction)
+        {
+            Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
+            Vector3 axis = Vector3.Cross(Vector3.up, direction);
+
+            for (int i = 0; i < 45 / angleIncrement; i++)
+            {
+                transform.RotateAround(anchor, axis, angleIncrement);
+                await UniTask.Delay(moveDelayInMillis);
+            }
+            
+            for (int i = 0; i < 45 / angleIncrement; i++)
+            {
+                transform.RotateAround(anchor, axis, -angleIncrement);
+                await UniTask.Delay(moveDelayInMillis);
+            }
+        }
+
+        public void TakeDamage()
+        {
+            _livePoints--;
+
+            if (_livePoints <= 0)
+            {
+                this.LogError("Game Lost!");
+            }
         }
     }
 }

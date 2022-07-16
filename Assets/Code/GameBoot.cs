@@ -17,7 +17,7 @@ namespace Yarde
         {
             Logger.Level = loggerLevel;
             
-            await _rootFlow.Start(new MenuOpenEvent()).SuppressCancellationThrow();
+            //await _rootFlow.Start(new MenuOpenEvent()).SuppressCancellationThrow();
         }
     }
 }
