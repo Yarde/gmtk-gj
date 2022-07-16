@@ -16,6 +16,7 @@ namespace Yarde.GameBoard
         private ObstacleBase[] _obstacles;
         private EnemyBase[] _enemies;
         private CollectibleBase[] _collectibles;
+        private bool _waiting;
         public static bool Paused { get; set; }
 
         private void Awake()
@@ -31,11 +32,28 @@ namespace Yarde.GameBoard
             _inputManager.OnNewTurn += MakeTurn;
         }
 
+        private async void Update()
+        {
+            await TakeTimeDamage();
+        }
+
+        private async UniTask TakeTimeDamage()
+        {
+            if (_waiting)
+            {
+                return;
+            }
+
+            _waiting = true;
+            _player.TakeDamage(1);
+            await UniTask.Delay(1000);
+            _waiting = false;
+        }
+
         private async UniTask MakeTurn(Vector3 arg)
         {
             await MakePlayerTurn(arg);
             await MakeEnemyTurn();
-            _player.TakeDamage(1);
             _player.AddPoints(1);
         }
 
@@ -87,7 +105,7 @@ namespace Yarde.GameBoard
             foreach (EnemyBase enemy in _enemies)
             {
                 Vector3 destination = enemy.GetEnemyMove();
-                if (destination.magnitude > 0f )
+                if (destination.magnitude > 0f)
                 {
                     if (!CheckIfPathIsFree(destination, enemy.Size))
                     {
