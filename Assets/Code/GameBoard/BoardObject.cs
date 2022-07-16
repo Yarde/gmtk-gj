@@ -7,14 +7,20 @@ namespace Yarde.GameBoard
         private const float ERROR_CORRECTION = 0.01f;
         [SerializeField] private Vector2 size = Vector2.one;
 
-        public bool CheckCollision(Vector3 other, Vector2 otherSize)
+        public Vector2 Size => size;
+
+        public bool CheckCollision(Vector3 otherPosition, Vector2 otherSize)
         {
-            Vector3 position = transform.position;
-            float distanceX = Mathf.Abs(other.x - position.x);
-            float distanceZ = Mathf.Abs(other.z - position.z);
+            return CheckCollision(transform.position, size, otherPosition, otherSize);
+        }
+        
+        public bool CheckCollision(Vector3 thisPosition, Vector2 thisSize, Vector3 otherPosition, Vector2 otherSize)
+        {
+            float distanceX = Mathf.Abs(otherPosition.x - thisPosition.x);
+            float distanceZ = Mathf.Abs(otherPosition.z - thisPosition.z);
             // when calculating distance there is floating point approximation error so I added small error correction to it
-            bool collidedX = distanceX + ERROR_CORRECTION < (otherSize.x + size.x) / 2;
-            bool collidedZ = distanceZ + ERROR_CORRECTION < (otherSize.y + size.y) / 2;
+            bool collidedX = distanceX + ERROR_CORRECTION < (otherSize.x + thisSize.x) / 2;
+            bool collidedZ = distanceZ + ERROR_CORRECTION < (otherSize.y + thisSize.y) / 2;
 
             // game is in 2D plane so we skip Y
             bool collision = collidedX && collidedZ;

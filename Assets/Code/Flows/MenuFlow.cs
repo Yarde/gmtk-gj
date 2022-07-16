@@ -1,4 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
+using VContainer;
 using Yarde.EventDispatcher;
 using Yarde.UI;
 using Yarde.WindowSystem;
@@ -13,7 +15,10 @@ namespace Yarde.Code.Flows
     
     public class MenuFlow : MenuFlowBase
     {
+        [Inject] [UsedImplicitly] private Player _player;
+        
         private readonly IWindowManager _windowManager;
+        private MenuWindow _window;
 
         public MenuFlow(IDispatcher dispatcher, IWindowManager windowManager) : base(dispatcher) => _windowManager = windowManager;
 
@@ -21,7 +26,12 @@ namespace Yarde.Code.Flows
         {
             listener.AddHandler<MenuOpenEvent>(OnMenuOpen);
             listener.AddHandler<BackButtonEvent>(_ => Cancel());
+            _player.OnUpdate += PlayerOnUpdate;
             await UniTask.CompletedTask;
+        }
+
+        private void PlayerOnUpdate() {
+             _window.UpdateWindow(_player);
         }
 
         protected override async UniTask OnCancel(IListener listener)
@@ -31,7 +41,7 @@ namespace Yarde.Code.Flows
 
         private async UniTask OnMenuOpen(MenuOpenEvent ev)
         {
-            await _windowManager.Add<MenuWindow>(WindowType.Menu, async window => await window.Setup());
+            _window = await _windowManager.Add<MenuWindow>(WindowType.Menu, async window => await window.Setup());
         }
 
         private async UniTask OnMenuClose()
@@ -40,5 +50,4 @@ namespace Yarde.Code.Flows
         }
     }
 
-    public sealed class MenuOpenEvent : IEvent { }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -6,7 +7,7 @@ using Yarde.Utils.Logger;
 
 namespace Yarde.GameBoard
 {
-    [LogSettings(color:"#8CC")]
+    [LogSettings(color: "#8CC")]
     public class Game : MonoBehaviour
     {
         [Inject] private InputManager _inputManager;
@@ -15,6 +16,7 @@ namespace Yarde.GameBoard
         private ObstacleBase[] _obstacles;
         private EnemyBase[] _enemies;
         private CollectibleBase[] _collectibles;
+        public static bool Paused { get; set; }
 
         private void Awake()
         {
@@ -25,6 +27,7 @@ namespace Yarde.GameBoard
 
         private void Start()
         {
+            Paused = false;
             _inputManager.OnNewTurn += MakeTurn;
         }
 
@@ -32,29 +35,49 @@ namespace Yarde.GameBoard
         {
             await MakePlayerTurn(arg);
             await MakeEnemyTurn();
+            _player.TakeDamage(1);
+            _player.AddPoints(1);
         }
 
-        private async UniTask MakePlayerTurn(Vector3 arg)
+        private async UniTask MakePlayerTurn(Vector3 direction)
         {
-            this.LogInfo($"Top side of dice is {_player.TopSide}");
-            bool free = CheckIfPathIsFree(arg);
-            if (free)
+            this.LogVerbose($"Top side of dice is {_player.TopSide}");
+            if (CheckIfPathIsFree(_player.transform.position + direction, _player.Size))
             {
-                EnemyBase killedEnemy = CheckKilledEnemy(arg);
-                UniTask roll = _player.Roll(arg);
-                if (killedEnemy != null)
+                EnemyBase attackedEnemy = CheckAttackedEnemy(direction);
+                if (attackedEnemy != null)
                 {
-                    await _player.OnEnemyKilled(killedEnemy);
-                    await killedEnemy.Kill();
+                    await AttackEnemy(direction, attackedEnemy);
                 }
-                await roll;
+                else
+                {
+                    await _player.Roll(direction);
+                }
+                await TryCollectItems();
             }
             else
             {
-                await _player.HalfRoll(arg);
+                // obstacle hit
+                await _player.HalfRoll(direction);
             }
+        }
 
-            await TryCollectItems();
+        private async UniTask AttackEnemy(Vector3 direction, EnemyBase attackedEnemy)
+        {
+            // check if enemy will be killed or not
+            if (attackedEnemy.Hp <= _player.TopSide)
+            {
+                await UniTask.WhenAll(
+                    _player.Roll(direction),
+                    _player.OnEnemyKilled(attackedEnemy.Damage),
+                    attackedEnemy.Kill()
+                );
+            }
+            else
+            {
+                await _player.HalfRoll(direction);
+                _player.TakeDamage(attackedEnemy.Damage);
+            }
         }
 
         private async UniTask MakeEnemyTurn()
@@ -62,18 +85,21 @@ namespace Yarde.GameBoard
             var enemyMoves = new List<UniTask>();
             foreach (EnemyBase enemy in _enemies)
             {
-                Vector3 direction = enemy.GetEnemyMove();
-                if (direction.magnitude > 0f)
+                Vector3 destination = enemy.GetEnemyMove();
+                if (destination.magnitude > 0f )
                 {
-                    bool hit = enemy.CheckPlayerHit(direction);
-                    if (hit)
+                    if (!CheckIfPathIsFree(destination, enemy.Size))
+                    {
+                        enemyMoves.Add(enemy.MakeHalfMove(destination));
+                    }
+                    else if (enemy.CheckCollision(destination, enemy.Size, _player.transform.position, _player.Size))
                     {
                         _player.TakeDamage(enemy.Damage);
-                        enemyMoves.Add(enemy.MakeHalfMove(direction));
+                        enemyMoves.Add(enemy.MakeHalfMove(destination));
                     }
                     else
                     {
-                        enemyMoves.Add(enemy.MakeMove(direction));
+                        enemyMoves.Add(enemy.MakeMove(destination));
                     }
                 }
             }
@@ -81,26 +107,25 @@ namespace Yarde.GameBoard
             await UniTask.WhenAll(enemyMoves);
         }
 
-        private EnemyBase CheckKilledEnemy(Vector3 vector3)
+        private EnemyBase CheckAttackedEnemy(Vector3 vector3)
         {
             Vector3 destination = _player.transform.position + vector3;
             foreach (EnemyBase enemy in _enemies)
             {
                 if (enemy.CheckCollision(destination, _player.Size))
                 {
-                    this.Log($"Enemy: {enemy.name} killed!");
+                    this.Log($"Enemy: {enemy.name} attacked!");
                     return enemy;
                 }
             }
             return null;
         }
 
-        private bool CheckIfPathIsFree(Vector3 vector3)
+        private bool CheckIfPathIsFree(Vector3 destination, Vector2 size)
         {
-            Vector3 destination = _player.transform.position + vector3;
             foreach (ObstacleBase obstacle in _obstacles)
             {
-                if (obstacle.CheckCollision(destination, _player.Size))
+                if (obstacle.CheckCollision(destination, size))
                 {
                     this.Log($"Path Blocked by Obstacle: {obstacle.name}");
                     return false;
@@ -108,7 +133,7 @@ namespace Yarde.GameBoard
             }
             return true;
         }
-        
+
         private async UniTask TryCollectItems()
         {
             foreach (CollectibleBase collectible in _collectibles)

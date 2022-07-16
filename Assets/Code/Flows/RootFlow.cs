@@ -5,11 +5,7 @@ using Yarde.EventDispatcher;
 
 namespace Yarde.Code.Flows
 {
-    public abstract class RootFlowBase : BaseFlow
-    {
-        protected RootFlowBase(IDispatcher dispatcher) : base(dispatcher) { }
-    }
-    
+
     public class RootFlow : RootFlowBase
     {
         [Inject] [UsedImplicitly] private MenuFlowBase _menu;

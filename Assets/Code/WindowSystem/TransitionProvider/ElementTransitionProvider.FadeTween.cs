@@ -41,7 +41,7 @@ namespace Yarde.WindowSystem.TransitionProvider
                 }
 
 
-                this.LogError($"Target {target.name} doesn't have a {nameof(Graphic)} nor {nameof(CanvasGroup)} component.");
+                this.LogWarning($"Target {target.name} doesn't have a {nameof(Graphic)} nor {nameof(CanvasGroup)} component.");
                 return null;
             }
 
