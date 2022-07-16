@@ -5,8 +5,11 @@ namespace Yarde.GameBoard
 {
     public abstract class EnemyBase : BoardObject
     {
-        public abstract float Hp { get; }
-        public abstract float Damage { get; }
+        [SerializeField] private float hp;
+        [SerializeField] private float damage;
+
+        public float Hp => hp;
+        public float Damage => damage;
         public abstract Vector3 GetEnemyMove();
         public abstract UniTask Kill();
         public abstract UniTask MakeMove(Vector3 direction);

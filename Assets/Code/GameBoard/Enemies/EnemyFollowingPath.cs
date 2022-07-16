@@ -46,12 +46,6 @@ namespace Yarde.GameBoard.Enemies
             return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);;
         }
 
-        public override bool CheckPlayerHit(Vector3 direction)
-        {
-            //TO DO implement
-            return false;
-        }
-
         public override UniTask Kill()
         {
             Destroy(gameObject);
