@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -11,8 +10,9 @@ namespace Yarde.GameBoard.Enemies
         [SerializeField] private List<Transform> waypoints;
         [SerializeField] private float moveDelayInSec = 1;
         [SerializeField] private float movementSpeed = 1;
-        private Vector3 _targetPosition;
+        [SerializeField] private bool loop = true;
         private int _queueDirection = 1;
+        private Vector3 _targetPosition;
         private int _waypointIndex;
 
         private void Start()
@@ -30,15 +30,29 @@ namespace Yarde.GameBoard.Enemies
 
         private void CheckWaypoint()
         {
-            if (_waypointIndex == waypoints.Count - 1)
-                _queueDirection = -1;
-            if (_waypointIndex == 0)
-                _queueDirection = 1;
+            if (loop)
+                LoopWaypointsList();
+            else
+                FlipWaypointsList();
+            
             if (transform.position == _targetPosition)
             {
                 _waypointIndex += _queueDirection;
                 _targetPosition = waypoints[_waypointIndex].position;
             }
+        }
+
+        private void LoopWaypointsList()
+        {
+            if (_waypointIndex == waypoints.Count - 1) _waypointIndex = -1;
+        }
+
+        private void FlipWaypointsList()
+        {
+            if (_waypointIndex == waypoints.Count - 1)
+                _queueDirection = -1;
+            else if (_waypointIndex == 0)
+                _queueDirection = 1;
         }
 
         public override Vector3 GetEnemyMove()
@@ -62,8 +76,8 @@ namespace Yarde.GameBoard.Enemies
         {
             var prevPosition = transform.position;
             var newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
-            await transform.DOMove(newDirection, moveDelayInSec/2);
-            await transform.DOMove(prevPosition, moveDelayInSec/2);
+            await transform.DOMove(newDirection, moveDelayInSec / 2);
+            await transform.DOMove(prevPosition, moveDelayInSec / 2);
         }
     }
 }
