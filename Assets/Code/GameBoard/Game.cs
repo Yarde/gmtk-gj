@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -72,6 +72,7 @@ namespace Yarde.GameBoard
                     _player.OnEnemyKilled(attackedEnemy.Damage),
                     attackedEnemy.Kill()
                 );
+                _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
             }
             else
             {
