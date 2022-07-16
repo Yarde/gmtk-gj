@@ -10,14 +10,16 @@ namespace Yarde.GameBoard
     {
         [Inject] private InputManager _inputManager;
         [Inject] private Player _player;
-        
+
         private ObstacleBase[] _obstacles;
         private EnemyBase[] _enemies;
+        private CollectibleBase[] _collectibles;
 
         private void Awake()
         {
             _obstacles = GetComponentsInChildren<ObstacleBase>();
             _enemies = GetComponentsInChildren<EnemyBase>();
+            _collectibles = GetComponentsInChildren<CollectibleBase>();
         }
 
         private void Start()
@@ -40,8 +42,7 @@ namespace Yarde.GameBoard
                 if (kill != null)
                 {
                     Destroy(kill.gameObject);
-
-                    // todo add some points of other shit
+                    _player.OnEnemyKilled(kill);
                 }
                 await _player.Roll(arg);
             }
@@ -49,6 +50,8 @@ namespace Yarde.GameBoard
             {
                 await _player.HalfRoll(arg);
             }
+
+            await TryCollectItems();
         }
 
         private async UniTask MakeEnemyTurn()
@@ -61,14 +64,13 @@ namespace Yarde.GameBoard
                     bool hit = enemy.CheckPlayerHit(direction);
                     if (hit)
                     {
-                        _player.TakeDamage();
+                        _player.TakeDamage(enemy.Damage);
                     }
                     else
                     {
                         enemy.MakeMove(direction);
                     }
                 }
-                
             }
         }
 
@@ -100,6 +102,19 @@ namespace Yarde.GameBoard
                 }
             }
             return true;
+        }
+        
+        private async UniTask TryCollectItems()
+        {
+            foreach (CollectibleBase collectible in _collectibles)
+            {
+                var distance = Vector3.Distance(_player.transform.position, collectible.transform.position);
+                if (distance < 0.5f)
+                {
+                    this.Log($"Collectible found: {collectible.name}");
+                    _player.CollectItem(collectible.Collect());
+                }
+            }
         }
     }
 }

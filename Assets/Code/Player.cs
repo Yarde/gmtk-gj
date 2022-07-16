@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Yarde.GameBoard;
 using Yarde.Utils.Logger;
 
 namespace Yarde
@@ -8,13 +9,13 @@ namespace Yarde
     {
         [SerializeField] private float angleIncrement = 5;
         [SerializeField] private int moveDelayInMillis = 10;
-        [SerializeField] private int startingLives = 3;
+        [SerializeField] private float startingHealth = 3;
 
-        private int _livePoints;
+        private float _healthPoints;
 
         private void Awake()
         {
-            _livePoints = startingLives;
+            _healthPoints = startingHealth;
         }
 
         public async UniTask Roll(Vector3 direction)
@@ -47,14 +48,24 @@ namespace Yarde
             }
         }
 
-        public void TakeDamage()
+        public void TakeDamage(float damage)
         {
-            _livePoints--;
+            _healthPoints -= damage;
 
-            if (_livePoints <= 0)
+            if (_healthPoints <= 0)
             {
                 this.LogError("Game Lost!");
             }
+        }
+
+        public void OnEnemyKilled(EnemyBase kill)
+        {
+            // todo add some points of other shit
+        }
+
+        public void CollectItem(CollectibleReward collect)
+        {
+            // todo apply collected reward
         }
     }
 }
