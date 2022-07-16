@@ -15,8 +15,9 @@ namespace Yarde.GameBoard.Enemies
         private Vector3 _targetPosition;
         private int _waypointIndex;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             SetInitValues();
             CheckWaypoint();
         }
