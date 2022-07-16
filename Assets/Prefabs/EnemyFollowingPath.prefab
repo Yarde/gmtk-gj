@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2419326620489002981}
   m_Layer: 0
-  m_Name: PathFollowingEnemy
+  m_Name: EnemyFollowingPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 2419326621376049512}
   - component: {fileID: 2419326621376049513}
   - component: {fileID: 2419326621376049518}
-  - component: {fileID: 2419326621376049519}
+  - component: {fileID: 1721093645068471298}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -258,7 +258,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2419326621376049519
+--- !u!114 &1721093645068471298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

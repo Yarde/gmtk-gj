@@ -1,14 +1,17 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using VContainer;
+using Yarde.GameBoard;
 
-namespace Yarde.GameBoard.Enemies
+namespace Yarde
 {
-    public class PathFollowingEnemy : EnemyBase
+    public class EnemyFollowingPlayer  : EnemyBase
     {
-        [SerializeField] private List<Transform> waypoints;
+        [Inject] private Player _player;
         [SerializeField] private float moveDelayInSec = 1;
         [SerializeField] private float movementSpeed = 1;
         private float _maxDistanceDelta;
@@ -24,22 +27,22 @@ namespace Yarde.GameBoard.Enemies
 
         private void SetInitValues()
         {
-            transform.position = waypoints[waypointIndex].position;
-            waypointIndex++;
-            _targetPosition = waypoints[waypointIndex].position;
+            // transform.position = waypoints[waypointIndex].position;
+            // waypointIndex++;
+            // _targetPosition = waypoints[waypointIndex].position;
         }
 
         private void CheckWaypoint()
         {
-            if (waypointIndex == waypoints.Count - 1)
-                queueDirection = -1;
-            if (waypointIndex == 0)
-                queueDirection = 1;
-            if (transform.position == _targetPosition)
-            {
-                waypointIndex += queueDirection;
-                _targetPosition = waypoints[waypointIndex].position;
-            }
+            // if (waypointIndex == waypoints.Count - 1)
+            //     queueDirection = -1;
+            // if (waypointIndex == 0)
+            //     queueDirection = 1;
+            // if (transform.position == _targetPosition)
+            // {
+            //     waypointIndex += queueDirection;
+            //     _targetPosition = waypoints[waypointIndex].position;
+            // }
         }
 
         private Vector3 FollowPath()
