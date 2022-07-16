@@ -271,10 +271,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 1, y: 1}
+  hp: 3
+  damage: 1
   waypoints:
   - {fileID: 2419326620515639065}
   - {fileID: 2419326620455654314}
   - {fileID: 2419326620032697249}
   - {fileID: 2419326620112517161}
-  moveDelayInSec: 1
+  moveDelayInSec: 0.1
   movementSpeed: 1

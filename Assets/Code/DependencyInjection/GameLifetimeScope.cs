@@ -3,7 +3,6 @@ using VContainer;
 using VContainer.Unity;
 using Yarde.Code.Flows;
 using Yarde.EventDispatcher;
-using Yarde.GameBoard;
 using Yarde.WindowSystem;
 using Yarde.WindowSystem.BlendProvider;
 using Yarde.WindowSystem.CanvasProvider;

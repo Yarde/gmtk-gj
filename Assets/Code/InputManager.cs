@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer.Unity;
+using Yarde.GameBoard;
 
 namespace Yarde
 {
@@ -12,7 +13,7 @@ namespace Yarde
 
         public async void Update()
         {
-            if (_isMoving || OnNewTurn == null)
+            if (_isMoving || OnNewTurn == null || Game.Paused)
             {
                 return;
             }

@@ -1839,7 +1839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angleIncrement: 10
   moveDelayInMillis: 20
-  startingHealth: 3
+  startingHealth: 60
   sides:
   - {fileID: 235126250543834028}
   - {fileID: 235126249561922549}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -43,13 +43,7 @@ namespace Yarde.GameBoard.Enemies
 
         public override Vector3 GetEnemyMove()
         {
-            return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);;
-        }
-
-        public override bool CheckPlayerHit(Vector3 direction)
-        {
-            //TO DO implement
-            return false;
+            return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
         }
 
         public override UniTask Kill()

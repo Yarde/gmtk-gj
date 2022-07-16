@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Yarde.GameBoard;
@@ -14,10 +15,12 @@ namespace Yarde
 
         [SerializeField] private List<Transform> sides;
 
-        private float _healthPoints;
+        public float HealthPoints { get; private set; }
+        public float Points { get; private set; }
         public Vector2 Size => new Vector2(1, 1);
 
         public int TopSide => FindTopSide();
+        public Action OnUpdate { get; set; }
 
         private int FindTopSide()
         {
@@ -37,7 +40,8 @@ namespace Yarde
 
         private void Awake()
         {
-            _healthPoints = startingHealth;
+            HealthPoints = startingHealth;
+            Points = 0;
         }
 
         public async UniTask Roll(Vector3 direction)
@@ -72,22 +76,32 @@ namespace Yarde
 
         public void TakeDamage(float damage)
         {
-            _healthPoints -= damage;
+            HealthPoints -= damage;
 
-            if (_healthPoints <= 0)
+            if (HealthPoints <= 0)
             {
                 this.LogError("Game Lost!");
             }
+            OnUpdate?.Invoke();
+        }
+        
+        public void AddPoints(int points)
+        {
+            Points += points;
+            OnUpdate?.Invoke();
         }
 
-        public async UniTask OnEnemyKilled(EnemyBase kill)
+        public async UniTask OnEnemyKilled(float enemyLevel)
         {
-            // todo add some points of other shit
+            HealthPoints += enemyLevel;
+            Points += enemyLevel;
         }
 
         public async UniTask CollectItem(CollectibleReward collect)
         {
-            // todo apply collected reward
+            HealthPoints += collect.hearts;
+            Points += collect.points;
+            angleIncrement += collect.speed;
         }
     }
 }

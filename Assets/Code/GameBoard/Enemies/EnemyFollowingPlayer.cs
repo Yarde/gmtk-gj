@@ -20,15 +20,10 @@ namespace Yarde
             return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
         }
 
-        public override bool CheckPlayerHit(Vector3 direction)
-        {
-            return false;
-        }
-
-        public override UniTask Kill()
+        public override async UniTask Kill()
         {
             Destroy(gameObject);
-            return UniTask.CompletedTask;
+            await UniTask.CompletedTask;
         }
 
         public override async UniTask MakeMove(Vector3 direction)
