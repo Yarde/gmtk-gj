@@ -107,10 +107,10 @@ TextureImporter:
       name: DiceTextures_1
       rect:
         serializedVersion: 2
-        x: 212
-        y: 1612
-        width: 580
-        height: 572
+        x: 222
+        y: 1618
+        width: 564
+        height: 561
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,10 +128,10 @@ TextureImporter:
       name: DiceTextures_2
       rect:
         serializedVersion: 2
-        x: 988
-        y: 1608
-        width: 575
-        height: 575
+        x: 992
+        y: 1615
+        width: 563
+        height: 561
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,10 +149,10 @@ TextureImporter:
       name: DiceTextures_4
       rect:
         serializedVersion: 2
-        x: 214
-        y: 834
-        width: 582
-        height: 577
+        x: 221
+        y: 842
+        width: 565
+        height: 564
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +170,10 @@ TextureImporter:
       name: DiceTextures_3
       rect:
         serializedVersion: 2
-        x: 991
-        y: 839
-        width: 574
-        height: 577
+        x: 993
+        y: 842
+        width: 565
+        height: 563
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,10 +191,10 @@ TextureImporter:
       name: DiceTextures_5
       rect:
         serializedVersion: 2
-        x: 214
-        y: 72
-        width: 582
-        height: 575
+        x: 224
+        y: 77
+        width: 565
+        height: 563
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -212,10 +212,10 @@ TextureImporter:
       name: DiceTextures_6
       rect:
         serializedVersion: 2
-        x: 988
-        y: 72
-        width: 580
-        height: 575
+        x: 997
+        y: 74
+        width: 561
+        height: 564
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
