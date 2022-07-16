@@ -586,6 +586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7013bb1006c4d79b85023d3380cdeaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  millisBetweenSyncs: 1000
+  autoEnemyMove: 0
+  timeLoseLive: 1
+  moveLoseLive: 0
 --- !u!4 &490792691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8953455055958006057, guid: 0765b53f0fa724949be97e7235e7d175,
@@ -1703,7 +1707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit

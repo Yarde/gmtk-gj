@@ -10,6 +10,11 @@ namespace Yarde.GameBoard
     [LogSettings(color: "#8CC")]
     public class Game : MonoBehaviour
     {
+        [SerializeField] private int millisBetweenSyncs = 1000;
+        [SerializeField] private bool autoEnemyMove;
+        [SerializeField] private bool timeLoseLive = true;
+        [SerializeField] private bool moveLoseLive;
+        
         [Inject] private InputManager _inputManager;
         [Inject] private Player _player;
 
@@ -45,16 +50,36 @@ namespace Yarde.GameBoard
             }
 
             _waiting = true;
-            _player.TakeDamage(1);
-            await UniTask.Delay(1000);
+            if (timeLoseLive)
+            {
+                _player.TakeDamage(1);
+            }
+            
+            if (autoEnemyMove)
+            {
+                await UniTask.WhenAll(
+                    MakeEnemyTurn(),
+                    UniTask.Delay(millisBetweenSyncs));
+            }
+            else
+            {
+                await UniTask.Delay(millisBetweenSyncs);
+            }
             _waiting = false;
         }
 
         private async UniTask MakeTurn(Vector3 arg)
         {
             await MakePlayerTurn(arg);
-            await MakeEnemyTurn();
+            if (!autoEnemyMove)
+            {
+                await MakeEnemyTurn();
+            }
             _player.AddPoints(1);
+            if (moveLoseLive)
+            {
+                _player.TakeDamage(1);
+            }
         }
 
         private async UniTask MakePlayerTurn(Vector3 direction)
