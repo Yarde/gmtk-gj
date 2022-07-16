@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Yarde.GameBoard;
 using Yarde.Utils.Logger;
@@ -11,8 +12,28 @@ namespace Yarde
         [SerializeField] private int moveDelayInMillis = 10;
         [SerializeField] private float startingHealth = 3;
 
+        [SerializeField] private List<Transform> sides;
+
         private float _healthPoints;
         public Vector2 Size => new Vector2(1, 1);
+
+        public int TopSide => FindTopSide();
+
+        private int FindTopSide()
+        {
+            float maxY = 0f;
+            Transform maxSide = transform;
+            foreach (Transform side in sides)
+            {
+                if (side.position.y > maxY)
+                {
+                    maxSide = side;
+                    maxY = side.position.y;
+                }
+            }
+
+            return int.Parse(maxSide.name);
+        }
 
         private void Awake()
         {

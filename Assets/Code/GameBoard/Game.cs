@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using UnityEngine;
 using VContainer;
 using Yarde.Utils.Logger;
 
 namespace Yarde.GameBoard
 {
+    [LogSettings(color:"#8CC")]
     public class Game : MonoBehaviour
     {
         [Inject] private InputManager _inputManager;
@@ -35,8 +34,9 @@ namespace Yarde.GameBoard
             await MakeEnemyTurn();
         }
 
-        private async Task MakePlayerTurn(Vector3 arg)
+        private async UniTask MakePlayerTurn(Vector3 arg)
         {
+            this.LogInfo($"Top side of dice is {_player.TopSide}");
             bool free = CheckIfPathIsFree(arg);
             if (free)
             {
