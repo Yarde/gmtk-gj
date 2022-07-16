@@ -15,15 +15,18 @@ namespace Yarde.GameBoard.Enemies
         private Vector3 _targetPosition;
         private int _waypointIndex;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             SetInitValues();
             CheckWaypoint();
         }
 
         private void SetInitValues()
         {
-            transform.position = waypoints[_waypointIndex].position;
+            var firstWaypoint = waypoints[_waypointIndex].position ;
+            firstWaypoint.y =  transform.position.y;
+            transform.position = firstWaypoint;
             _waypointIndex++;
             _targetPosition = waypoints[_waypointIndex].position;
         }
@@ -57,6 +60,7 @@ namespace Yarde.GameBoard.Enemies
 
         public override Vector3 GetEnemyMove()
         {
+            _targetPosition.y = transform.position.y;
             return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
         }
 

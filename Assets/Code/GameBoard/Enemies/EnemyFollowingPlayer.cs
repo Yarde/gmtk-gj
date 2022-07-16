@@ -13,7 +13,7 @@ namespace Yarde
         [Inject] private Player _player;
         private Vector3 _targetPosition;
         private int _waypointIndex;
-
+        
         public override Vector3 GetEnemyMove()
         {
             _targetPosition = _player.transform.position;

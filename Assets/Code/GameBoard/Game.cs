@@ -10,12 +10,19 @@ namespace Yarde.GameBoard
     [LogSettings(color: "#8CC")]
     public class Game : MonoBehaviour
     {
+        [SerializeField] private int millisBetweenSyncs = 1000;
+        [SerializeField] private bool autoEnemyMove;
+        [SerializeField] private bool timeLoseLive = true;
+        [SerializeField] private bool moveLoseLive;
+        private CollectibleBase[] _collectibles;
+        private EnemyBase[] _enemies;
+        private ExitLevel _exitLevel;
+
         [Inject] private InputManager _inputManager;
-        [Inject] private Player _player;
 
         private ObstacleBase[] _obstacles;
-        private EnemyBase[] _enemies;
-        private CollectibleBase[] _collectibles;
+        [Inject] private Player _player;
+        private bool _waiting;
         public static bool Paused { get; set; }
 
         private void Awake()
@@ -23,6 +30,7 @@ namespace Yarde.GameBoard
             _obstacles = GetComponentsInChildren<ObstacleBase>();
             _enemies = GetComponentsInChildren<EnemyBase>();
             _collectibles = GetComponentsInChildren<CollectibleBase>();
+            _exitLevel = FindObjectOfType<ExitLevel>();
         }
 
         private void Start()
@@ -31,34 +39,62 @@ namespace Yarde.GameBoard
             _inputManager.OnNewTurn += MakeTurn;
         }
 
+        private async void Update()
+        {
+            await TakeTimeDamage();
+        }
+
+        private async UniTask TakeTimeDamage()
+        {
+            if (_waiting) return;
+
+            _waiting = true;
+            if (timeLoseLive) _player.TakeDamage(1);
+
+            if (autoEnemyMove)
+                await UniTask.WhenAll(
+                    MakeEnemyTurn(),
+                    UniTask.Delay(millisBetweenSyncs));
+            else
+                await UniTask.Delay(millisBetweenSyncs);
+            _waiting = false;
+        }
+
         private async UniTask MakeTurn(Vector3 arg)
         {
             await MakePlayerTurn(arg);
-            await MakeEnemyTurn();
-            _player.TakeDamage(1);
+            if (!autoEnemyMove) await MakeEnemyTurn();
             _player.AddPoints(1);
+            if (moveLoseLive) _player.TakeDamage(1);
         }
 
         private async UniTask MakePlayerTurn(Vector3 direction)
         {
             this.LogVerbose($"Top side of dice is {_player.TopSide}");
+            if (IsExitLevel(direction))
+            {
+                await UniTask.WhenAll(_exitLevel.LoadNextLevel(), _player.Roll(direction));
+                return;
+            }
             if (CheckIfPathIsFree(_player.transform.position + direction, _player.Size))
             {
-                EnemyBase attackedEnemy = CheckAttackedEnemy(direction);
+                var attackedEnemy = CheckAttackedEnemy(direction);
                 if (attackedEnemy != null)
-                {
                     await AttackEnemy(direction, attackedEnemy);
-                }
                 else
-                {
                     await _player.Roll(direction);
-                }
                 await TryCollectItems();
             }
             else
             {
                 // obstacle hit
-                await _player.HalfRoll(direction);
+                var touchedObstacle = CheckObstacle(direction);
+                if (touchedObstacle != null)
+                {
+                    await UniTask.WhenAll(touchedObstacle.OnTouch(), _player.HalfRoll(direction));
+
+                    _obstacles = _obstacles.Where(e => e != touchedObstacle).ToArray();
+                }
             }
         }
 
@@ -84,10 +120,10 @@ namespace Yarde.GameBoard
         private async UniTask MakeEnemyTurn()
         {
             var enemyMoves = new List<UniTask>();
-            foreach (EnemyBase enemy in _enemies)
+            foreach (var enemy in _enemies)
             {
-                Vector3 destination = enemy.GetEnemyMove();
-                if (destination.magnitude > 0f )
+                var destination = enemy.GetEnemyMove();
+                if (destination.magnitude > 0f)
                 {
                     if (!CheckIfPathIsFree(destination, enemy.Size))
                     {
@@ -110,41 +146,58 @@ namespace Yarde.GameBoard
 
         private EnemyBase CheckAttackedEnemy(Vector3 vector3)
         {
-            Vector3 destination = _player.transform.position + vector3;
-            foreach (EnemyBase enemy in _enemies)
-            {
+            var destination = _player.transform.position + vector3;
+            foreach (var enemy in _enemies)
                 if (enemy.CheckCollision(destination, _player.Size))
                 {
                     this.Log($"Enemy: {enemy.name} attacked!");
                     return enemy;
                 }
-            }
+
             return null;
+        }
+
+        private ObstacleBase CheckObstacle(Vector3 vector3)
+        {
+            var destination = _player.transform.position + vector3;
+            foreach (var obstacle in _obstacles)
+                if (obstacle.CheckCollision(destination, _player.Size))
+                {
+                    this.Log($"Obstacle: {obstacle.name} touched");
+                    return obstacle;
+                }
+
+            return null;
+        }
+
+        private bool IsExitLevel(Vector3 vector3)
+        {
+            var destination = _player.transform.position + vector3;
+            if (!_exitLevel || !_exitLevel.CheckCollision(destination, _player.Size)) return false;
+            this.Log("Exit Level");
+            return true;
         }
 
         private bool CheckIfPathIsFree(Vector3 destination, Vector2 size)
         {
-            foreach (ObstacleBase obstacle in _obstacles)
-            {
+            foreach (var obstacle in _obstacles)
                 if (obstacle.CheckCollision(destination, size))
                 {
                     this.Log($"Path Blocked by Obstacle: {obstacle.name}");
                     return false;
                 }
-            }
+
             return true;
         }
 
         private async UniTask TryCollectItems()
         {
-            foreach (CollectibleBase collectible in _collectibles)
-            {
+            foreach (var collectible in _collectibles)
                 if (collectible.CheckCollision(_player.transform.position, _player.Size))
                 {
                     this.Log($"Collectible found: {collectible.name}");
                     await _player.CollectItem(collectible.Collect());
                 }
-            }
         }
     }
 }
