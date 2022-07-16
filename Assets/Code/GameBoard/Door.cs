@@ -3,18 +3,14 @@ using VContainer;
 
 namespace Yarde.GameBoard
 {
-    public class Door :ObstacleBase
+    public class Door : ObstacleBase
     {
         [Inject] private Player _player;
-        // public override  UniTask OnTouch()
-        // {
-        //     if (_player.TopSide < Hp) return;
-        //     Destroy(gameObject);
-        //     return UniTask.CompletedTask;
-        // }
+
         public override UniTask OnTouch()
         {
-            Destroy(gameObject);
+            if (_player.TopSide >= Hp)
+                Destroy(gameObject);
             return UniTask.CompletedTask;
         }
     }
