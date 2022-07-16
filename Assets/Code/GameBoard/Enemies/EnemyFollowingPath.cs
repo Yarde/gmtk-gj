@@ -11,7 +11,6 @@ namespace Yarde.GameBoard.Enemies
         [SerializeField] private List<Transform> waypoints;
         [SerializeField] private float moveDelayInSec = 1;
         [SerializeField] private float movementSpeed = 1;
-        private float _maxDistanceDelta;
         private Vector3 _targetPosition;
         private int queueDirection = 1;
         private int waypointIndex;
@@ -55,6 +54,7 @@ namespace Yarde.GameBoard.Enemies
 
         public override bool CheckPlayerHit(Vector3 direction)
         {
+            //TO DO implement
             return false;
         }
 
@@ -71,10 +71,10 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeHalfMove(Vector3 direction)
         {
-            var startPosition = transform.position;
-            var halfDir = Vector3.MoveTowards(startPosition, direction, 0.5f);
-            await transform.DOMove(halfDir, moveDelayInSec/2);
-            await transform.DOMove(startPosition, moveDelayInSec/2);
+            var prevPosition = transform.position;
+            var newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
+            await transform.DOMove(newDirection, moveDelayInSec/2);
+            await transform.DOMove(prevPosition, moveDelayInSec/2);
             CheckWaypoint();
         }
     }
