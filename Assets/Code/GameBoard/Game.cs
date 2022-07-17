@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
+using Yarde.Utils.Extensions;
 using Yarde.Utils.Logger;
 
 namespace Yarde.GameBoard
@@ -148,22 +149,23 @@ namespace Yarde.GameBoard
             foreach (EnemyBase enemy in _enemies)
             {
                 Vector3 destination = enemy.GetEnemyMove();
+                this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} has move? {destination.magnitude > 0f}, {destination}");
                 if (destination.magnitude > 0f)
                 {
                     if (CheckIfPathIsFree(destination, enemy.Size) != null)
                     {
-                        this.LogVerbose($"Enemy: {enemy.name} blocked, do HalfMove");
+                        this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} blocked, do HalfMove");
                         enemyMoves.Add(enemy.MakeHalfMove(destination));
                     }
                     else if (enemy.CheckCollision(destination, enemy.Size, _player.transform.position, _player.Size))
                     {
-                        this.LogVerbose($"Enemy: {enemy.name} hit player, do HalfMove");
+                        this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} hit player, do HalfMove");
                         _player.TakeDamage(enemy.Damage);
                         enemyMoves.Add(enemy.MakeHalfMove(destination));
                     }
                     else
                     {
-                        this.LogVerbose($"Enemy: {enemy.name} do normal Move");
+                        this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} do normal Move");
                         enemyMoves.Add(enemy.MakeMove(destination));
                     }
                 }
