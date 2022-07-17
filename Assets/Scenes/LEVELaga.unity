@@ -2128,6 +2128,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 150278442}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &152528038 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5183211231447251549, guid: 9d55752745e8757459142779a2f27f7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1545122371}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &154721316
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19419,8 +19425,13 @@ PrefabInstance:
     - target: {fileID: 8828654249761684310, guid: 9d55752745e8757459142779a2f27f7e,
         type: 3}
       propertyPath: waypoints.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8828654249761684310, guid: 9d55752745e8757459142779a2f27f7e,
+        type: 3}
+      propertyPath: waypoints.Array.data[3]
+      value: 
+      objectReference: {fileID: 152528038}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d55752745e8757459142779a2f27f7e, type: 3}
 --- !u!4 &1545122372 stripped
