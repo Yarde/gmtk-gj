@@ -17,9 +17,11 @@ namespace Yarde.GameBoard
 
         protected virtual void Start()
         {
-            var spriteRenderer = GetComponent<SpriteRenderer>();
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             if (spriteRenderer != null && sprites.Count > 0)
+            {
                 spriteRenderer.sprite = sprites[(int)Mathf.Max(Damage - 1, 0)];
+            }
         }
 
         public abstract Vector3 GetEnemyMove();
