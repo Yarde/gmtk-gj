@@ -4799,8 +4799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   millisBetweenSyncs: 1000
-  timeDamage: 1
-  autoEnemyMove: 1
+  autoEnemyMove: 0
   timeLoseLive: 1
   moveLoseLive: 0
   animateCamera: 0
