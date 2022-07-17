@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using Yarde.GameBoard;
 using Yarde.Utils.Logger;
@@ -86,13 +87,25 @@ namespace Yarde
             }
         }
 
-        public void TakeDamage(float damage)
+        public async UniTask TakeDamage(float damage)
         {
             HealthPoints -= damage;
 
             if (HealthPoints <= 0)
             {
                 this.LogError("Game Lost!");
+            }
+            if (damage >= 1)
+            {
+                foreach (SpriteRenderer spriteRenderer in _spriteRenderers)
+                {
+                    spriteRenderer.DOColor(Color.red, 0.1f);
+                }
+                await UniTask.Delay(100);
+                foreach (SpriteRenderer spriteRenderer in _spriteRenderers)
+                {
+                    spriteRenderer.DOColor(Color.white, 0.1f);
+                }
             }
             OnDamage?.Invoke(damage);
             OnUpdate?.Invoke();
