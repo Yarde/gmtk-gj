@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 1, y: 1}
-  soundOnPlayerHit: {fileID: 8300000, guid: bbdf81b764bdf404a85e941acb7f4da3, type: 3}
+  soundOnPlayerHit: {fileID: 8300000, guid: 37730d65749a0644f98062ff84cfff86, type: 3}
   hp: 1
   damage: 1
   sprites:
