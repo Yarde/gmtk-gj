@@ -43,7 +43,7 @@ namespace Yarde.GameBoard.Enemies
                 FlipWaypointsList();
             }
 
-            if (transform.position == _targetPosition)
+            if (transform && transform.position == _targetPosition)
             {
                 _waypointIndex += _queueDirection;
                 _targetPosition = waypoints[_waypointIndex].position;
