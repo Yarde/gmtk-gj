@@ -12,15 +12,20 @@ namespace Yarde
         [SerializeField] private float smoothSpeed = 10f;
         [SerializeField] private Vector3 offset;
         [SerializeField] private Light light;
+        
+        [SerializeField] private float shakeDuration;
+        [SerializeField] private float shakeStrength;
+        [SerializeField] private float lightChangeTimeInSec;
+        [SerializeField] private float delayBetweenLightsInSec;
+        [SerializeField] [Range(0.1f, 1000f)] private float delayBetweenLightsModifier;
         private bool _animating;
 
         [Inject] private Player _player;
 
-        private void Awake()
+        private void Start()
         {
             if (Game.Animate)
             {
-                _player.OnKill += OnPlayerKill;
                 _player.OnDamage += OnPlayerTakeDamage;
             }
         }
@@ -34,9 +39,9 @@ namespace Yarde
 
             _animating = true;
             float lifeLoss = _player.HealthPoints / _player.MaxHealthPoints;
-            await light.DOColor(new Color(1f, lifeLoss, lifeLoss), 0.2f);
-            await light.DOColor(Color.white, 0.2f);
-            await UniTask.Delay(600);
+            await light.DOColor(new Color(1f, lifeLoss, lifeLoss), lightChangeTimeInSec/2f);
+            await light.DOColor(Color.white, lightChangeTimeInSec/2f);
+            await UniTask.Delay((int)(delayBetweenLightsInSec.ToMilliseconds() / (delayBetweenLightsModifier / Mathf.Max(0.1f, lifeLoss))));
             _animating = false;
         }
 
@@ -51,13 +56,15 @@ namespace Yarde
 
         private void OnDestroy()
         {
-            _player.OnKill -= OnPlayerKill;
             _player.OnDamage -= OnPlayerTakeDamage;
         }
 
         private void OnPlayerTakeDamage(float damage)
         {
-            transform.DOShakeRotation(0.3f, 0.2f * (damage - 0.5f));
+            if (damage >= 1)
+            {
+                transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
+            }
         }
 
         private void OnPlayerKill()

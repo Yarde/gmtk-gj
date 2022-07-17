@@ -43,7 +43,7 @@ namespace Yarde.GameBoard.Enemies
                 FlipWaypointsList();
             }
 
-            if (transform && transform.position == _targetPosition)
+            if (transform != null && transform.position == _targetPosition)
             {
                 _waypointIndex += _queueDirection;
                 _targetPosition = waypoints[_waypointIndex].position;
@@ -90,12 +90,20 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeMove(Vector3 direction)
         {
-            await transform.DOMove(direction, moveDelayInSec);
+            if (!transform)
+            {
+                return;
+            }
             CheckWaypoint();
+            await transform.DOMove(direction, moveDelayInSec);
         }
 
         public override async UniTask MakeHalfMove(Vector3 direction)
         {
+            if (!transform)
+            {
+                return;
+            }
             Vector3 prevPosition = transform.position;
             Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec / 2);
