@@ -6,6 +6,7 @@ namespace Yarde.GameBoard
     {
         private const float ERROR_CORRECTION = 0.01f;
         [SerializeField] private Vector2 size = Vector2.one;
+        [SerializeField] public AudioClip soundOnPlayerHit;
 
         public Vector2 Size => size;
 

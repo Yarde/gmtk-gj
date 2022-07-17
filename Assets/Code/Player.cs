@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yarde.GameBoard;
+using Yarde.Utils.Extensions;
 using Yarde.Utils.Logger;
 
 namespace Yarde
@@ -15,6 +16,7 @@ namespace Yarde
         [SerializeField] private int moveDelayInMillis = 10;
         [SerializeField] private float startingHealth = 3;
         [SerializeField] private float hpGainMultiplier = 3;
+        [SerializeField] private float delayBetweenMovesInSec = 1;
 
         [SerializeField] private List<Transform> sides;
         private List<SpriteRenderer> _spriteRenderers = new List<SpriteRenderer>();
@@ -63,6 +65,12 @@ namespace Yarde
             Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
+            FullMove(anchor, axis).Forget();
+            await UniTask.Delay(delayBetweenMovesInSec.ToMilliseconds());
+        }
+
+        private async UniTask FullMove(Vector3 anchor, Vector3 axis)
+        {
             for (int i = 0; i < 90 / angleIncrement; i++)
             {
                 transform.RotateAround(anchor, axis, angleIncrement);
@@ -75,6 +83,12 @@ namespace Yarde
             Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
+            HalfMove(anchor, axis).Forget();
+            await UniTask.Delay(delayBetweenMovesInSec.ToMilliseconds());
+        }
+
+        private async UniTask HalfMove(Vector3 anchor, Vector3 axis)
+        {
             for (int i = 0; i < 15 / angleIncrement; i++)
             {
                 transform.RotateAround(anchor, axis, angleIncrement);

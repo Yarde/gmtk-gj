@@ -20,12 +20,18 @@ namespace Yarde.GameBoard
         [SerializeField] private bool timeLoseLive = true;
         [SerializeField] private bool moveLoseLive;
         [SerializeField] private bool animateCamera;
+        [SerializeField] private List<AudioSource> audioSources;
+        [SerializeField] private AudioClip diceRollAudio;
+        [SerializeField] private AudioClip diceBlockedAudio;
+        [SerializeField] private AudioClip diceHitAudio;
+        [SerializeField] private AudioClip levelWinAudio;
         
         [Header("Particles")]
         private ParticleSystem enemyKillParticle;
         private CollectibleBase[] _collectibles;
         private EnemyBase[] _enemies;
         private ExitLevel _exitLevel;
+        private int _currentSource;
 
         [Inject] private InputManager _inputManager;
 
@@ -101,6 +107,7 @@ namespace Yarde.GameBoard
             if (IsExitLevel(direction))
             {
                 await UniTask.WhenAll(_exitLevel.LoadNextLevel(), _player.Roll(direction));
+                PlaySfx(levelWinAudio);
                 return;
             }
             ObstacleBase touchedObstacle = CheckIfPathIsFree(_player.transform.position + direction, _player.Size);
@@ -110,10 +117,12 @@ namespace Yarde.GameBoard
                 if (attackedEnemy != null)
                 {
                     await AttackEnemy(direction, attackedEnemy);
+                    PlaySfx(attackedEnemy.soundOnPlayerHit);
                 }
                 else
                 {
                     await _player.Roll(direction);
+                    PlaySfx(diceRollAudio);
                 }
                 await TryCollectItems();
             }
@@ -123,11 +132,26 @@ namespace Yarde.GameBoard
                 {
                     _obstacles = _obstacles.Where(e => e != touchedObstacle).ToArray();
                     await _player.Roll(direction);
+                    PlaySfx(diceRollAudio);
                 }
                 else
                 {
                     await _player.HalfRoll(direction);
+                    PlaySfx(diceBlockedAudio);
                 }
+                PlaySfx(touchedObstacle.soundOnPlayerHit);
+            }
+        }
+
+        private void PlaySfx(AudioClip clip)
+        {
+            audioSources[_currentSource].clip = clip;
+            audioSources[_currentSource].Play();
+
+            _currentSource++;
+            if (_currentSource >= audioSources.Count)
+            {
+                _currentSource = 0;
             }
         }
 
@@ -139,6 +163,7 @@ namespace Yarde.GameBoard
                 _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
                 PlayParticle(attackedEnemy);
                 _player.OnEnemyKilled(attackedEnemy.Damage);
+                PlaySfx(diceHitAudio);
                 await UniTask.WhenAll(
                     _player.Roll(direction),
                     attackedEnemy.Kill()
@@ -146,6 +171,8 @@ namespace Yarde.GameBoard
             }
             else
             {
+                PlaySfx(diceBlockedAudio);
+                PlaySfx(attackedEnemy.soundOnPlayerHit);
                 await UniTask.WhenAll(
                     _player.HalfRoll(direction),
                     _player.TakeDamage(attackedEnemy.Damage)
@@ -181,6 +208,7 @@ namespace Yarde.GameBoard
                         this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} hit player, do HalfMove");
                         enemyMoves.Add(_player.TakeDamage(enemy.Damage));
                         enemyMoves.Add(enemy.MakeHalfMove(destination));
+                        PlaySfx(enemy.soundOnPlayerHit);
                     }
                     else
                     {
