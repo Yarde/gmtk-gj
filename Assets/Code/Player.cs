@@ -12,6 +12,7 @@ namespace Yarde
         [SerializeField] private float angleIncrement = 5;
         [SerializeField] private int moveDelayInMillis = 10;
         [SerializeField] private float startingHealth = 3;
+        [SerializeField] private float hpGainMultiplier = 3;
 
         [SerializeField] private List<Transform> sides;
 
@@ -97,9 +98,9 @@ namespace Yarde
             OnUpdate?.Invoke();
         }
 
-        public async UniTask OnEnemyKilled(float enemyLevel)
+        public void OnEnemyKilled(float enemyLevel)
         {
-            HealthPoints += enemyLevel;
+            HealthPoints += enemyLevel * hpGainMultiplier;
             Points += enemyLevel;
             OnKill?.Invoke();
         }
