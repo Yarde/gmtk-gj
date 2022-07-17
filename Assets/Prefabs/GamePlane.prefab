@@ -194,10 +194,10 @@ MonoBehaviour:
   - {fileID: 7967647232026735771}
   - {fileID: 7967647232026735772}
   - {fileID: 7967647232026735773}
-  diceRollAudio: {fileID: 8300000, guid: 7bebf2f03055bb94c8a48def0e28b5b1, type: 3}
-  diceBlockedAudio: {fileID: 8300000, guid: 7bebf2f03055bb94c8a48def0e28b5b1, type: 3}
+  diceRollAudio: {fileID: 8300000, guid: 179bd6d3daa6c974e9b7ddd0cb041b98, type: 3}
+  diceBlockedAudio: {fileID: 8300000, guid: 6ec859cc5f823d24caadd98b973da3a0, type: 3}
   diceHitAudio: {fileID: 8300000, guid: 7bebf2f03055bb94c8a48def0e28b5b1, type: 3}
-  levelWinAudio: {fileID: 8300000, guid: 7bebf2f03055bb94c8a48def0e28b5b1, type: 3}
+  levelWinAudio: {fileID: 8300000, guid: 4e8e05b700fda7048b89469e71cf2d7f, type: 3}
   enemyKillParticle: {fileID: 880230033286364103}
 --- !u!82 &7967647232026735769
 AudioSource:
