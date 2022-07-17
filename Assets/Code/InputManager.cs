@@ -11,16 +11,13 @@ namespace Yarde
 
         public async void Update()
         {
-            if (_isMoving || OnNewTurn == null || Game.Paused)
-            {
-                return;
-            }
+            if (_isMoving || OnNewTurn == null || Game.Paused) return;
             _isMoving = true;
 
-            if (Input.GetKeyDown(KeyCode.A)) { await OnNewTurn.Invoke(Vector3.left); }
-            if (Input.GetKeyDown(KeyCode.D)) { await OnNewTurn.Invoke(Vector3.right); }
-            if (Input.GetKeyDown(KeyCode.W)) { await OnNewTurn.Invoke(Vector3.forward); }
-            if (Input.GetKeyDown(KeyCode.S)) { await OnNewTurn.Invoke(Vector3.back); }
+            var axisX = Input.GetAxis("Horizontal");
+            var axisY = Input.GetAxis("Vertical");
+            if (Input.anyKeyDown && axisX != 0) await OnNewTurn.Invoke(axisX > 0 ? Vector3.right : Vector3.left);
+            if (Input.anyKeyDown && axisY != 0) await OnNewTurn.Invoke(axisY > 0 ? Vector3.forward : Vector3.back);
 
             _isMoving = false;
         }
