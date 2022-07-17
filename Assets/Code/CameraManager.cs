@@ -19,11 +19,13 @@ namespace Yarde
         [SerializeField] private float delayBetweenLightsInSec = 0.6f;
         [SerializeField] [Range(0.1f, 1000f)] private float delayBetweenLightsModifier = 1f;
         private bool _animating;
+        private Camera _camera;
 
         [Inject] private Player _player;
 
         private void Start()
         {
+            _camera = GetComponent<Camera>();
             if (Game.Animate)
             {
                 _player.OnDamage += OnPlayerTakeDamage;
@@ -59,11 +61,22 @@ namespace Yarde
             _player.OnDamage -= OnPlayerTakeDamage;
         }
 
-        private void OnPlayerTakeDamage(float damage)
+        private async void OnPlayerTakeDamage(float damage)
         {
             if (damage >= 1)
             {
                 transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
+                
+                for (int i = 0; i < 10; i++)
+                {
+                    _camera.orthographicSize -= 0.1f;
+                    await UniTask.Delay(5);
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    _camera.orthographicSize += 0.1f;
+                    await UniTask.Delay(5);
+                }
             }
         }
     }
