@@ -844,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLoadDelay: 1
-  animationDelay: 3
+  animationDelay: 1
   animationDuration: 2
   shadowColor: {r: 0.3764706, g: 0.3764706, b: 0.3764706, a: 1}
   backgroundImage: {fileID: 1457762399}

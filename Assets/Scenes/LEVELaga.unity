@@ -25522,10 +25522,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 275446866602033448, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6521818055517980430, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7913267534375450548, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
+        type: 3}
+      propertyPath: hpGainMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7967647232026735712, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
         type: 3}
       propertyPath: m_Name
       value: GamePlane
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967647232026735774, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
+        type: 3}
+      propertyPath: timeDamage
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7967647232026735775, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
         type: 3}

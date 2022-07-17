@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yarde.GameBoard;
 using Yarde.Utils.Extensions;
-using Yarde.Utils.Logger;
 
 namespace Yarde
 {
@@ -17,6 +16,7 @@ namespace Yarde
         [SerializeField] private float startingHealth = 3;
         [SerializeField] private float hpGainMultiplier = 3;
         [SerializeField] private float delayBetweenMovesInSec = 1;
+        [SerializeField] private ParticleSystem deathParticles;
 
         [SerializeField] private List<Transform> sides;
         private List<SpriteRenderer> _spriteRenderers = new List<SpriteRenderer>();
@@ -108,7 +108,8 @@ namespace Yarde
 
             if (HealthPoints <= 0)
             {
-                this.LogError("Game Lost!");
+                deathParticles.Play();
+                await UniTask.Delay(1000);
                 SceneManager.LoadScene("Scenes/EndScreenFail");
             }
             if (damage >= 1)

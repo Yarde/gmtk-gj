@@ -27,7 +27,7 @@ namespace Yarde.GameBoard
         [SerializeField] private AudioClip levelWinAudio;
         
         [Header("Particles")]
-        private ParticleSystem enemyKillParticle;
+        [SerializeField] private ParticleSystem enemyKillParticle;
         private CollectibleBase[] _collectibles;
         private EnemyBase[] _enemies;
         private ExitLevel _exitLevel;
@@ -46,8 +46,6 @@ namespace Yarde.GameBoard
             _collectibles = GetComponentsInChildren<CollectibleBase>();
             _exitLevel = FindObjectOfType<ExitLevel>();
 
-            enemyKillParticle = FindObjectOfType<ParticleSystem>();
-            
             Paused = false;
             Animate = animateCamera;
         }
