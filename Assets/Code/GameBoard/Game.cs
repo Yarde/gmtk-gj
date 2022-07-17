@@ -129,12 +129,12 @@ namespace Yarde.GameBoard
             // check if enemy will be killed or not
             if (attackedEnemy.Hp <= _player.TopSide)
             {
+                _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
                 await UniTask.WhenAll(
                     _player.Roll(direction),
                     _player.OnEnemyKilled(attackedEnemy.Damage),
                     attackedEnemy.Kill()
                 );
-                _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
             }
             else
             {
