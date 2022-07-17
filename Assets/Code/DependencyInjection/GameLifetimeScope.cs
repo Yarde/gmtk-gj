@@ -15,10 +15,12 @@ namespace Yarde.DependencyInjection
         [SerializeField] private BlendViewBase blendViewBase;
         [SerializeField] private CanvasManagerBase canvasManagerBase;
         [SerializeField] private InputManager inputManager;
-        [SerializeField] private Player player;
+        private Player _player;
 
         protected override void Configure(IContainerBuilder builder)
         {
+            _player = FindObjectOfType<Player>();
+            
             RegisterSystems(builder);
             RegisterFlows(builder);
             RegisterComponents(builder);
@@ -26,15 +28,15 @@ namespace Yarde.DependencyInjection
 
         private static void RegisterSystems(IContainerBuilder builder)
         {
-            builder.Register<IWindowManager, DictionaryWindowManager>(Lifetime.Singleton);
-            builder.Register<IWindowProvider, ScriptableObjectWindowProvider>(Lifetime.Singleton);
-            builder.Register<IDispatcher, ListDispatcher>(Lifetime.Singleton);
+            builder.Register<IWindowManager, DictionaryWindowManager>(Lifetime.Scoped);
+            builder.Register<IWindowProvider, ScriptableObjectWindowProvider>(Lifetime.Scoped);
+            builder.Register<IDispatcher, ListDispatcher>(Lifetime.Scoped);
         }
 
         private static void RegisterFlows(IContainerBuilder builder)
         {
-            builder.Register<RootFlowBase, RootFlow>(Lifetime.Singleton);
-            builder.Register<MenuFlowBase, MenuFlow>(Lifetime.Singleton);
+            builder.Register<RootFlowBase, RootFlow>(Lifetime.Scoped);
+            builder.Register<MenuFlowBase, MenuFlow>(Lifetime.Scoped);
         }
 
         private void RegisterComponents(IContainerBuilder builder)
@@ -42,7 +44,7 @@ namespace Yarde.DependencyInjection
             builder.RegisterComponent(blendViewBase);
             builder.RegisterComponent(canvasManagerBase);
             builder.RegisterComponent(inputManager);
-            builder.RegisterComponent(player);
+            builder.RegisterComponent(_player);
         }
     }
 }

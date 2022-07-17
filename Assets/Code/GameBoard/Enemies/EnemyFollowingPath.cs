@@ -14,6 +14,7 @@ namespace Yarde.GameBoard.Enemies
         private int _queueDirection = 1;
         private Vector3 _targetPosition;
         private int _waypointIndex;
+        private int _turn;
 
         protected override void Start()
         {
@@ -60,8 +61,14 @@ namespace Yarde.GameBoard.Enemies
 
         public override Vector3 GetEnemyMove()
         {
-            _targetPosition.y = transform.position.y;
-            return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
+            _turn++;
+            if (_turn % turnsToMove - 1 == 0)
+            {
+                _targetPosition.y = transform.position.y;
+                return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
+            }
+            
+            return Vector3.zero;
         }
 
         public override UniTask Kill()

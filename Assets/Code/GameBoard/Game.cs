@@ -11,9 +11,11 @@ namespace Yarde.GameBoard
     public class Game : MonoBehaviour
     {
         [SerializeField] private int millisBetweenSyncs = 1000;
+        [SerializeField] private float timeDamage = 1;
         [SerializeField] private bool autoEnemyMove;
         [SerializeField] private bool timeLoseLive = true;
         [SerializeField] private bool moveLoseLive;
+        [SerializeField] private bool animateCamera;
         private CollectibleBase[] _collectibles;
         private EnemyBase[] _enemies;
         private ExitLevel _exitLevel;
@@ -23,7 +25,8 @@ namespace Yarde.GameBoard
         private ObstacleBase[] _obstacles;
         [Inject] private Player _player;
         private bool _waiting;
-        public static bool Paused { get; set; }
+        public static bool Paused;
+        public static bool Animate;
 
         private void Awake()
         {
@@ -36,6 +39,7 @@ namespace Yarde.GameBoard
         private void Start()
         {
             Paused = false;
+            Animate = animateCamera;
             _inputManager.OnNewTurn += MakeTurn;
         }
 
@@ -65,7 +69,7 @@ namespace Yarde.GameBoard
             await MakePlayerTurn(arg);
             if (!autoEnemyMove) await MakeEnemyTurn();
             _player.AddPoints(1);
-            if (moveLoseLive) _player.TakeDamage(1);
+            if (moveLoseLive) _player.TakeDamage(timeDamage);
         }
 
         private async UniTask MakePlayerTurn(Vector3 direction)
