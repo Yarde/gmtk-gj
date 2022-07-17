@@ -41,12 +41,13 @@ namespace Yarde.GameBoard
             _exitLevel = FindObjectOfType<ExitLevel>();
 
             enemyKillParticle = FindObjectOfType<ParticleSystem>();
+            
+            Paused = false;
+            Animate = animateCamera;
         }
 
         private void Start()
         {
-            Paused = false;
-            Animate = animateCamera;
             _inputManager.OnNewTurn += MakeTurn;
         }
 
@@ -64,7 +65,7 @@ namespace Yarde.GameBoard
             _waiting = true;
             if (timeLoseLive)
             {
-                _player.TakeDamage(1);
+                _player.TakeDamage(timeDamage);
             }
 
             if (autoEnemyMove)
@@ -137,9 +138,9 @@ namespace Yarde.GameBoard
             {
                 _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
                 PlayParticle(attackedEnemy);
+                _player.OnEnemyKilled(attackedEnemy.Damage);
                 await UniTask.WhenAll(
                     _player.Roll(direction),
-                    _player.OnEnemyKilled(attackedEnemy.Damage),
                     attackedEnemy.Kill()
                 );
             }

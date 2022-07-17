@@ -12,8 +12,10 @@ namespace Yarde
         [SerializeField] private float angleIncrement = 5;
         [SerializeField] private int moveDelayInMillis = 10;
         [SerializeField] private float startingHealth = 3;
+        [SerializeField] private float hpGainMultiplier = 3;
 
         [SerializeField] private List<Transform> sides;
+        private List<SpriteRenderer> _spriteRenderers = new List<SpriteRenderer>();
 
         public float HealthPoints { get; private set; }
         public float Points { get; private set; }
@@ -31,6 +33,11 @@ namespace Yarde
             HealthPoints = startingHealth;
             MaxHealthPoints = startingHealth;
             Points = 0;
+
+            foreach (Transform side in sides)
+            {
+                _spriteRenderers.Add(side.GetComponent<SpriteRenderer>());
+            }
         }
 
         private int FindTopSide()
@@ -97,9 +104,9 @@ namespace Yarde
             OnUpdate?.Invoke();
         }
 
-        public async UniTask OnEnemyKilled(float enemyLevel)
+        public void OnEnemyKilled(float enemyLevel)
         {
-            HealthPoints += enemyLevel;
+            HealthPoints += enemyLevel * hpGainMultiplier;
             Points += enemyLevel;
             OnKill?.Invoke();
         }

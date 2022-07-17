@@ -343,6 +343,11 @@ MonoBehaviour:
   smoothSpeed: 3
   offset: {x: 0, y: 0, z: -1}
   light: {fileID: 575494772501712004}
+  shakeDuration: 0.2
+  shakeStrength: 5
+  lightChangeTimeInSec: 0.4
+  delayBetweenLightsInSec: 0.6
+  delayBetweenLightsModifier: 1
 --- !u!82 &474255401120477050
 AudioSource:
   m_ObjectHideFlags: 0
