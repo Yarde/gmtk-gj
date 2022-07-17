@@ -26069,7 +26069,7 @@ PrefabInstance:
     - target: {fileID: 7967647232026735774, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
         type: 3}
       propertyPath: timeDamage
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7967647232026735775, guid: 16d80d0ae7b4be24a82b0012ea1690fc,
         type: 3}
