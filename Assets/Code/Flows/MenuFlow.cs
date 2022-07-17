@@ -41,7 +41,7 @@ namespace Yarde.Code.Flows
 
         private async UniTask OnMenuOpen(MenuOpenEvent ev)
         {
-            _window = await _windowManager.Add<MenuWindow>(WindowType.Menu, async window => await window.Setup());
+            _window = await _windowManager.Add<MenuWindow>(WindowType.Menu, async window => await window.Setup(_player));
         }
 
         private async UniTask OnMenuClose()
