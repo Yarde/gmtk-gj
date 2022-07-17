@@ -107,7 +107,7 @@ namespace Yarde.GameBoard.Enemies
             Vector3 prevPosition = transform.position;
             Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec / 2);
-            if (!transform)
+            if ( gameObject == null && !ReferenceEquals(gameObject, null))
             {
                 return;
             }
