@@ -90,7 +90,7 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeMove(Vector3 direction)
         {
-            if (!transform)
+            if (gameObject == null && !ReferenceEquals(gameObject, null))
             {
                 return;
             }
@@ -100,7 +100,7 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeHalfMove(Vector3 direction)
         {
-            if (!transform)
+            if (gameObject == null && !ReferenceEquals(gameObject, null))
             {
                 return;
             }
