@@ -80,8 +80,9 @@ MonoBehaviour:
   size: {x: 1, y: 1}
   hp: 3
   damage: 1
-  waypoints:
-  - {fileID: 2419326620489002981}
+  sprites: []
+  turnsToMove: 2
+  waypoints: []
   moveDelayInSec: 0.1
   movementSpeed: 1
   loop: 1
