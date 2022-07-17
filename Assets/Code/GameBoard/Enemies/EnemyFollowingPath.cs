@@ -90,12 +90,20 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeMove(Vector3 direction)
         {
+            if (!transform)
+            {
+                return;
+            }
             await transform.DOMove(direction, moveDelayInSec);
             CheckWaypoint();
         }
 
         public override async UniTask MakeHalfMove(Vector3 direction)
         {
+            if (!transform)
+            {
+                return;
+            }
             Vector3 prevPosition = transform.position;
             Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec / 2);
