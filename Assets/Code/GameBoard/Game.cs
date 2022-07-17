@@ -65,7 +65,7 @@ namespace Yarde.GameBoard
             _waiting = true;
             if (timeLoseLive)
             {
-                _player.TakeDamage(timeDamage);
+                await _player.TakeDamage(timeDamage);
             }
 
             if (autoEnemyMove)
@@ -91,7 +91,7 @@ namespace Yarde.GameBoard
             _player.AddPoints(1);
             if (moveLoseLive)
             {
-                _player.TakeDamage(timeDamage);
+                await _player.TakeDamage(timeDamage);
             }
         }
 
@@ -146,8 +146,10 @@ namespace Yarde.GameBoard
             }
             else
             {
-                await _player.HalfRoll(direction);
-                _player.TakeDamage(attackedEnemy.Damage);
+                await UniTask.WhenAll(
+                    _player.HalfRoll(direction),
+                    _player.TakeDamage(attackedEnemy.Damage)
+                );
             }
         }
 
@@ -177,7 +179,7 @@ namespace Yarde.GameBoard
                     else if (enemy.CheckCollision(destination, enemy.Size, _player.transform.position, _player.Size))
                     {
                         this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} hit player, do HalfMove");
-                        _player.TakeDamage(enemy.Damage);
+                        enemyMoves.Add(_player.TakeDamage(enemy.Damage));
                         enemyMoves.Add(enemy.MakeHalfMove(destination));
                     }
                     else

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3b02ba929e82a2440b07907e1f13565a
+guid: b6a5d979903cffd44b43cff08ba4e95f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 400
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,21 +100,30 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: winning screen_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 715
+        width: 2880
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f848413a06288114ca4c61943d24275f
+      internalID: 82784828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -125,7 +134,24 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      winning screen_16: -58064813
+      winning screen_11: -555034633
+      winning screen_10: -1137341131
+      winning screen_3: -207683493
+      winning screen_0: -62950540
+      winning screen_8: -812907491
+      winning screen_5: 82784828
+      winning screen_2: 690017935
+      winning screen_1: -487127609
+      winning screen_9: -2086700459
+      winning screen_6: -1708707348
+      winning screen_7: 1198282522
+      winning screen_4: -2050154144
+      winning screen_13: 192058659
+      winning screen_15: 1623272632
+      winning screen_12: -1765493023
+      winning screen_14: 1450341124
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
