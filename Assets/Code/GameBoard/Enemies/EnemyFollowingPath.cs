@@ -73,7 +73,7 @@ namespace Yarde.GameBoard.Enemies
         public override Vector3 GetEnemyMove()
         {
             _turn++;
-            if (_turn % turnsToMove - 1 == 0)
+            if (_turn % turnsToMove == 0)
             {
                 _targetPosition.y = transform.position.y;
                 return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
