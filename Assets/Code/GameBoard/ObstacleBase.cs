@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Yarde.GameBoard
 {
@@ -7,6 +6,6 @@ namespace Yarde.GameBoard
     {
         [SerializeField] private float hp;
         public float Hp => hp;
-        public abstract UniTask OnTouch();
+        public abstract bool OnTouch();
     }
 }

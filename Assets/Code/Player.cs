@@ -26,6 +26,13 @@ namespace Yarde
         public Action OnItemCollected { get; set; }
         public float MaxHealthPoints { get; set; }
 
+        private void Awake()
+        {
+            HealthPoints = startingHealth;
+            MaxHealthPoints = startingHealth;
+            Points = 0;
+        }
+
         private int FindTopSide()
         {
             float maxY = 0f;
@@ -40,13 +47,6 @@ namespace Yarde
             }
 
             return int.Parse(maxSide.name);
-        }
-
-        private void Awake()
-        {
-            HealthPoints = startingHealth;
-            MaxHealthPoints = startingHealth;
-            Points = 0;
         }
 
         public async UniTask Roll(Vector3 direction)
@@ -71,7 +71,7 @@ namespace Yarde
                 transform.RotateAround(anchor, axis, angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
             }
-            
+
             for (int i = 0; i < 15 / angleIncrement; i++)
             {
                 transform.RotateAround(anchor, axis, -angleIncrement);
@@ -90,7 +90,7 @@ namespace Yarde
             OnDamage?.Invoke(damage);
             OnUpdate?.Invoke();
         }
-        
+
         public void AddPoints(int points)
         {
             Points += points;

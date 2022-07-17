@@ -22,7 +22,7 @@ namespace Yarde.Code.Flows
             await OnCancel(_listener);
             _dispatcher.RemoveListener(_listener);
         }
-        
+
         protected abstract UniTask OnStart(IListener listener);
         protected abstract UniTask OnCancel(IListener listener);
     }
