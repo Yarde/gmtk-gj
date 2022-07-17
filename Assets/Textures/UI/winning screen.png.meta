@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8dfc0000897a721449472440634d7dd8
+guid: b6a5d979903cffd44b43cff08ba4e95f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -104,13 +104,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: text segoe print_0
+      name: winning screen_5
       rect:
         serializedVersion: 2
         x: 0
-        y: 711
+        y: 715
         width: 2880
-        height: 236
+        height: 204
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,8 +118,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1e18d6ff733e3b428cbfc5d3bed6ff1
-      internalID: 1089384776
+      spriteID: f848413a06288114ca4c61943d24275f
+      internalID: 82784828
       vertices: []
       indices: 
       edges: []
@@ -135,14 +135,23 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      text segoe print_4: -431955790
-      text segoe print_7: -2028393974
-      text segoe print_3: -1458396176
-      text segoe print_6: 1268036330
-      text segoe print_2: -480644846
-      text segoe print_0: 1089384776
-      text segoe print_1: 1054337771
-      text segoe print_5: 975018380
+      winning screen_16: -58064813
+      winning screen_11: -555034633
+      winning screen_10: -1137341131
+      winning screen_3: -207683493
+      winning screen_0: -62950540
+      winning screen_8: -812907491
+      winning screen_5: 82784828
+      winning screen_2: 690017935
+      winning screen_1: -487127609
+      winning screen_9: -2086700459
+      winning screen_6: -1708707348
+      winning screen_7: 1198282522
+      winning screen_4: -2050154144
+      winning screen_13: 192058659
+      winning screen_15: 1623272632
+      winning screen_12: -1765493023
+      winning screen_14: 1450341124
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
