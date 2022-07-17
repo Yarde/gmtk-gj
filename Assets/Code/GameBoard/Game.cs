@@ -145,6 +145,11 @@ namespace Yarde.GameBoard
 
         private void PlaySfx(AudioClip clip)
         {
+            if (clip == null)
+            {
+                return;
+            }
+            
             audioSources[_currentSource].clip = clip;
             audioSources[_currentSource].Play();
 
