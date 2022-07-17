@@ -108,6 +108,7 @@ namespace Yarde
 
             if (HealthPoints <= 0)
             {
+                deathParticles.transform.position = transform.position;
                 deathParticles.Play();
                 await UniTask.Delay(1000);
                 SceneManager.LoadScene("Scenes/EndScreenFail");
