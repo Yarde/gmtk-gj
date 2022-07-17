@@ -559,7 +559,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angleIncrement: 10
   moveDelayInMillis: 20
-  startingHealth: 60
+  startingHealth: 20
+  hpGainMultiplier: 1
+  delayBetweenMovesInSec: 0.34
   sides:
   - {fileID: 235126250543834028}
   - {fileID: 235126249561922549}
