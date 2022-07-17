@@ -9,6 +9,7 @@ namespace Yarde.GameBoard
         [SerializeField] private float hp;
         [SerializeField] private float damage;
         [SerializeField] private List<Sprite> sprites;
+        [SerializeField] protected int turnsToMove = 2;
 
         public float Hp => hp;
         public float Damage => damage;

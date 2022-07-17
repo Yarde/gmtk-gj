@@ -21,6 +21,10 @@ namespace Yarde
 
         public int TopSide => FindTopSide();
         public Action OnUpdate { get; set; }
+        public Action OnKill { get; set; }
+        public Action<float> OnDamage { get; set; }
+        public Action OnItemCollected { get; set; }
+        public float MaxHealthPoints { get; set; }
 
         private int FindTopSide()
         {
@@ -41,6 +45,7 @@ namespace Yarde
         private void Awake()
         {
             HealthPoints = startingHealth;
+            MaxHealthPoints = startingHealth;
             Points = 0;
         }
 
@@ -82,6 +87,7 @@ namespace Yarde
             {
                 this.LogError("Game Lost!");
             }
+            OnDamage?.Invoke(damage);
             OnUpdate?.Invoke();
         }
         
@@ -95,6 +101,7 @@ namespace Yarde
         {
             HealthPoints += enemyLevel;
             Points += enemyLevel;
+            OnKill?.Invoke();
         }
 
         public async UniTask CollectItem(CollectibleReward collect)
@@ -102,6 +109,7 @@ namespace Yarde
             HealthPoints += collect.hearts;
             Points += collect.points;
             angleIncrement += collect.speed;
+            OnItemCollected?.Invoke();
         }
     }
 }

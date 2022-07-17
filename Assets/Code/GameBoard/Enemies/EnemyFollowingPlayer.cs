@@ -13,17 +13,24 @@ namespace Yarde
         [Inject] private Player _player;
         private Vector3 _targetPosition;
         private int _waypointIndex;
+        private int _turn;
         
         public override Vector3 GetEnemyMove()
         {
-            _targetPosition = _player.transform.position;
-            var delta = _targetPosition - transform.position;
-            var perpendicularTargetPosition = _targetPosition;
-            if (Mathf.Abs(delta.x) - Mathf.Abs(delta.z) > 0)
-                perpendicularTargetPosition.z = transform.position.z;
-            else
-                perpendicularTargetPosition.x = transform.position.x;
-            return Vector3.MoveTowards(transform.position, perpendicularTargetPosition, movementSpeed);
+            _turn++;
+            if (_turn % turnsToMove - 1 == 0)
+            {
+                _targetPosition = _player.transform.position;
+                var delta = _targetPosition - transform.position;
+                var perpendicularTargetPosition = _targetPosition;
+                if (Mathf.Abs(delta.x) - Mathf.Abs(delta.z) > 0)
+                    perpendicularTargetPosition.z = transform.position.z;
+                else
+                    perpendicularTargetPosition.x = transform.position.x;
+                return Vector3.MoveTowards(transform.position, perpendicularTargetPosition, movementSpeed);
+            }
+            
+            return Vector3.zero;
         }
 
         public override async UniTask Kill()
