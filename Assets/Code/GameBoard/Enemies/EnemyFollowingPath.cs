@@ -94,8 +94,8 @@ namespace Yarde.GameBoard.Enemies
             {
                 return;
             }
-            CheckWaypoint();
             await transform.DOMove(direction, moveDelayInSec);
+            CheckWaypoint();
         }
 
         public override async UniTask MakeHalfMove(Vector3 direction)
