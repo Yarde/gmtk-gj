@@ -11,6 +11,7 @@ namespace Yarde.GameBoard
     public class Game : MonoBehaviour
     {
         [SerializeField] private int millisBetweenSyncs = 1000;
+        [SerializeField] private float timeDamage = 1;
         [SerializeField] private bool autoEnemyMove;
         [SerializeField] private bool timeLoseLive = true;
         [SerializeField] private bool moveLoseLive;
@@ -68,7 +69,7 @@ namespace Yarde.GameBoard
             await MakePlayerTurn(arg);
             if (!autoEnemyMove) await MakeEnemyTurn();
             _player.AddPoints(1);
-            if (moveLoseLive) _player.TakeDamage(1);
+            if (moveLoseLive) _player.TakeDamage(timeDamage);
         }
 
         private async UniTask MakePlayerTurn(Vector3 direction)
