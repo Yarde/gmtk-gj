@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Yarde.Utils.Logger;
 using Yarde.WindowSystem.WindowProvider;
 
@@ -8,9 +9,7 @@ namespace Yarde.UI
 {
     public class MenuWindow : WindowBase
     {
-        [SerializeField] private TextMeshProUGUI text;
-
-        private const string TEXT_FORMAT = "Points: {0}\nTime left: {1}";
+        [SerializeField] private Image clock;
         
         public async UniTask Setup()
         {
@@ -32,7 +31,8 @@ namespace Yarde.UI
 
         public void UpdateWindow(Player player)
         {
-            text.text = string.Format(TEXT_FORMAT, player.Points, player.HealthPoints);
+            var time = player.HealthPoints / player.MaxHealthPoints;
+            clock.fillAmount = time;
         }
     }
 }

@@ -47,7 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: {x: 1, y: 1}
   hp: 3
-  sprites: []
+  sprites:
+  - {fileID: 21300000, guid: fbd16461056fa6c46956c7e128f9e93c, type: 3}
+  - {fileID: 21300000, guid: b6fce3b382123024897265718140a6d1, type: 3}
+  - {fileID: 21300000, guid: 79360b37146b733439a468c71b440547, type: 3}
+  - {fileID: 21300000, guid: 23c7e2b83b85a594aab632751ccec063, type: 3}
+  - {fileID: 21300000, guid: 9d7b58a2840baf1448db8b8e30526a92, type: 3}
+  - {fileID: 21300000, guid: e3c1b6fc192fa604790237d1995e229e, type: 3}
 --- !u!1 &4179008287884467086
 GameObject:
   m_ObjectHideFlags: 0
