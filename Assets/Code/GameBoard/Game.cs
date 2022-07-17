@@ -152,18 +152,18 @@ namespace Yarde.GameBoard
                 {
                     if (CheckIfPathIsFree(destination, enemy.Size) != null)
                     {
-                        this.LogInfo($"Enemy: {enemy.name} blocked, do HalfMove");
+                        this.LogVerbose($"Enemy: {enemy.name} blocked, do HalfMove");
                         enemyMoves.Add(enemy.MakeHalfMove(destination));
                     }
                     else if (enemy.CheckCollision(destination, enemy.Size, _player.transform.position, _player.Size))
                     {
-                        this.LogInfo($"Enemy: {enemy.name} hit player, do HalfMove");
+                        this.LogVerbose($"Enemy: {enemy.name} hit player, do HalfMove");
                         _player.TakeDamage(enemy.Damage);
                         enemyMoves.Add(enemy.MakeHalfMove(destination));
                     }
                     else
                     {
-                        this.LogInfo($"Enemy: {enemy.name} do normal Move");
+                        this.LogVerbose($"Enemy: {enemy.name} do normal Move");
                         enemyMoves.Add(enemy.MakeMove(destination));
                     }
                 }
