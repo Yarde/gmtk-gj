@@ -41,12 +41,13 @@ namespace Yarde.GameBoard
             _exitLevel = FindObjectOfType<ExitLevel>();
 
             enemyKillParticle = FindObjectOfType<ParticleSystem>();
+            
+            Paused = false;
+            Animate = animateCamera;
         }
 
         private void Start()
         {
-            Paused = false;
-            Animate = animateCamera;
             _inputManager.OnNewTurn += MakeTurn;
         }
 
