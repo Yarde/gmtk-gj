@@ -98,7 +98,7 @@ MonoBehaviour:
   - {fileID: 5183211231447251549}
   moveDelayInSec: 0.1
   movementSpeed: 1
-  loop: 0
+  loop: 1
 --- !u!212 &7010510521309792663
 SpriteRenderer:
   m_ObjectHideFlags: 0
