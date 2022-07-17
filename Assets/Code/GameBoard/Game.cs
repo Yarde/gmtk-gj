@@ -13,12 +13,16 @@ namespace Yarde.GameBoard
     {
         public static bool Paused;
         public static bool Animate;
+        [Header("Game settings")]
         [SerializeField] private int millisBetweenSyncs = 1000;
         [SerializeField] private float timeDamage = 1;
         [SerializeField] private bool autoEnemyMove;
         [SerializeField] private bool timeLoseLive = true;
         [SerializeField] private bool moveLoseLive;
         [SerializeField] private bool animateCamera;
+        
+        [Header("Particles")]
+        private ParticleSystem enemyKillParticle;
         private CollectibleBase[] _collectibles;
         private EnemyBase[] _enemies;
         private ExitLevel _exitLevel;
@@ -35,6 +39,8 @@ namespace Yarde.GameBoard
             _enemies = GetComponentsInChildren<EnemyBase>();
             _collectibles = GetComponentsInChildren<CollectibleBase>();
             _exitLevel = FindObjectOfType<ExitLevel>();
+
+            enemyKillParticle = FindObjectOfType<ParticleSystem>();
         }
 
         private void Start()
@@ -130,6 +136,7 @@ namespace Yarde.GameBoard
             if (attackedEnemy.Hp <= _player.TopSide)
             {
                 _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
+                PlayParticle(attackedEnemy);
                 await UniTask.WhenAll(
                     _player.Roll(direction),
                     _player.OnEnemyKilled(attackedEnemy.Damage),
@@ -140,6 +147,15 @@ namespace Yarde.GameBoard
             {
                 await _player.HalfRoll(direction);
                 _player.TakeDamage(attackedEnemy.Damage);
+            }
+        }
+
+        private void PlayParticle(EnemyBase attackedEnemy)
+        {
+            if (enemyKillParticle)
+            {
+                enemyKillParticle.transform.position = attackedEnemy.transform.position;
+                enemyKillParticle.Play();
             }
         }
 
