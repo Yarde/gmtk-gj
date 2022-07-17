@@ -65,7 +65,7 @@ namespace Yarde.GameBoard
             _waiting = true;
             if (timeLoseLive)
             {
-                _player.TakeDamage(1);
+                _player.TakeDamage(timeDamage);
             }
 
             if (autoEnemyMove)
@@ -138,9 +138,9 @@ namespace Yarde.GameBoard
             {
                 _enemies = _enemies.Where(e => e != attackedEnemy).ToArray();
                 PlayParticle(attackedEnemy);
+                _player.OnEnemyKilled(attackedEnemy.Damage);
                 await UniTask.WhenAll(
                     _player.Roll(direction),
-                    _player.OnEnemyKilled(attackedEnemy.Damage),
                     attackedEnemy.Kill()
                 );
             }

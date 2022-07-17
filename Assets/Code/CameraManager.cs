@@ -15,9 +15,9 @@ namespace Yarde
         
         [SerializeField] private float shakeDuration;
         [SerializeField] private float shakeStrength;
-        [SerializeField] private float lightChangeTimeInSec;
-        [SerializeField] private float delayBetweenLightsInSec;
-        [SerializeField] [Range(0.1f, 1000f)] private float delayBetweenLightsModifier;
+        [SerializeField] private float lightChangeTimeInSec = 0.4f;
+        [SerializeField] private float delayBetweenLightsInSec = 0.6f;
+        [SerializeField] [Range(0.1f, 1000f)] private float delayBetweenLightsModifier = 1f;
         private bool _animating;
 
         [Inject] private Player _player;
@@ -65,11 +65,6 @@ namespace Yarde
             {
                 transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
             }
-        }
-
-        private void OnPlayerKill()
-        {
-            transform.DOShakeRotation(1f, 0.2f);
         }
     }
 }
