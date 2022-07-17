@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Yarde.GameBoard;
 using Yarde.Utils.Logger;
 
@@ -93,6 +94,7 @@ namespace Yarde
             if (HealthPoints <= 0)
             {
                 this.LogError("Game Lost!");
+                SceneManager.LoadScene("Scenes/EndScreenFail");
             }
             OnDamage?.Invoke(damage);
             OnUpdate?.Invoke();

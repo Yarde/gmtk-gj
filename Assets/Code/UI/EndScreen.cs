@@ -10,6 +10,11 @@ namespace Yarde
 
         private void Start()
         {
+            ShowGameResult();
+        }
+
+        private void ShowGameResult()
+        {
             this.LogVerbose($"RestartGame in {timeToRestartGameSec}s");
             Invoke(nameof(RestartGame), timeToRestartGameSec);
         }
