@@ -13,8 +13,8 @@ namespace Yarde.GameBoard.Enemies
         [SerializeField] private bool loop = true;
         private int _queueDirection = 1;
         private Vector3 _targetPosition;
-        private int _waypointIndex;
         private int _turn;
+        private int _waypointIndex;
 
         protected override void Start()
         {
@@ -25,8 +25,8 @@ namespace Yarde.GameBoard.Enemies
 
         private void SetInitValues()
         {
-            var firstWaypoint = waypoints[_waypointIndex].position ;
-            firstWaypoint.y =  transform.position.y;
+            Vector3 firstWaypoint = waypoints[_waypointIndex].position;
+            firstWaypoint.y = transform.position.y;
             transform.position = firstWaypoint;
             _waypointIndex++;
             _targetPosition = waypoints[_waypointIndex].position;
@@ -35,10 +35,14 @@ namespace Yarde.GameBoard.Enemies
         private void CheckWaypoint()
         {
             if (loop)
+            {
                 LoopWaypointsList();
+            }
             else
+            {
                 FlipWaypointsList();
-            
+            }
+
             if (transform.position == _targetPosition)
             {
                 _waypointIndex += _queueDirection;
@@ -48,26 +52,33 @@ namespace Yarde.GameBoard.Enemies
 
         private void LoopWaypointsList()
         {
-            if (_waypointIndex == waypoints.Count - 1) _waypointIndex = -1;
+            if (_waypointIndex == waypoints.Count - 1)
+            {
+                _waypointIndex = -1;
+            }
         }
 
         private void FlipWaypointsList()
         {
             if (_waypointIndex == waypoints.Count - 1)
+            {
                 _queueDirection = -1;
+            }
             else if (_waypointIndex == 0)
+            {
                 _queueDirection = 1;
+            }
         }
 
         public override Vector3 GetEnemyMove()
         {
             _turn++;
-            if (_turn % turnsToMove - 1 == 0)
+            if (_turn % turnsToMove == 0)
             {
                 _targetPosition.y = transform.position.y;
                 return Vector3.MoveTowards(transform.position, _targetPosition, movementSpeed);
             }
-            
+
             return Vector3.zero;
         }
 
@@ -85,8 +96,8 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeHalfMove(Vector3 direction)
         {
-            var prevPosition = transform.position;
-            var newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
+            Vector3 prevPosition = transform.position;
+            Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec / 2);
             await transform.DOMove(prevPosition, moveDelayInSec / 2);
         }

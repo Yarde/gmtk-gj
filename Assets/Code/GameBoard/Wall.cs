@@ -1,12 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
-
-namespace Yarde.GameBoard
+﻿namespace Yarde.GameBoard
 {
     public class Wall : ObstacleBase
     {
-        public override async UniTask OnTouch()
-        {
-            await UniTask.CompletedTask;
-        }
+        public override bool OnTouch() => false;
     }
 }

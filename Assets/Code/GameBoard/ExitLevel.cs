@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 
 namespace Yarde.GameBoard
 {
-    public class ExitLevel:BoardObject
+    public class ExitLevel : BoardObject
     {
-        
-        [SerializeField] float levelLoadDelay = 1f;
 
-        
+        [SerializeField] private float levelLoadDelay = 1f;
+
+
         public async UniTask LoadNextLevel()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(levelLoadDelay));
@@ -21,9 +21,8 @@ namespace Yarde.GameBoard
             {
                 nextSceneIndex = 0;
             }
-            
+
             SceneManager.LoadScene(nextSceneIndex);
         }
-
     }
 }
