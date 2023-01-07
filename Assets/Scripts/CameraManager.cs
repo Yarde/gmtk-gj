@@ -64,21 +64,20 @@ namespace Yarde
 
         private async void OnPlayerTakeDamage(float damage)
         {
-            if (damage >= 1)
+            if (!(damage >= 1)) return;
+            
+            await transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
+
+            for (int i = 0; i < 10; i++)
             {
-                transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
+                _camera.orthographicSize -= 0.1f;
+                await UniTask.Delay(5);
+            }
 
-                for (int i = 0; i < 10; i++)
-                {
-                    _camera.orthographicSize -= 0.1f;
-                    await UniTask.Delay(5);
-                }
-
-                for (int i = 0; i < 10; i++)
-                {
-                    _camera.orthographicSize += 0.1f;
-                    await UniTask.Delay(5);
-                }
+            for (int i = 0; i < 10; i++)
+            {
+                _camera.orthographicSize += 0.1f;
+                await UniTask.Delay(5);
             }
         }
     }

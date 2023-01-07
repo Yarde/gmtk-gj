@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Yarde.Utils.Extensions;
@@ -89,8 +88,13 @@ namespace Yarde.GameBoard
 
         private async UniTask MakeTurn(Vector3 direction)
         {
-            await CheckWin(direction);
+            if (await CheckWin(direction))
+            {
+                return;
+            }
+
             await MakePlayerTurn(direction);
+
             if (!autoEnemyMove)
             {
                 await MakeEnemyTurn();
@@ -99,14 +103,16 @@ namespace Yarde.GameBoard
             _player.AddPoints(1);
         }
 
-        private async UniTask CheckWin(Vector3 direction)
+        private async UniTask<bool> CheckWin(Vector3 direction)
         {
             if (IsExitLevel(direction))
             {
                 await UniTask.WhenAll(_exitLevel.LoadNextLevel(), _player.Roll(direction));
                 PlaySfx(levelWinAudio);
-                return;
+                return true;
             }
+
+            return false;
         }
 
         private async UniTask MakePlayerTurn(Vector3 direction)
@@ -114,43 +120,53 @@ namespace Yarde.GameBoard
             this.LogVerbose($"Top side of dice is {_player.TopSide}");
 
             ObstacleBase touchedObstacle = CheckIfPathIsFree(_player.transform.position + direction, _player.Size);
-            if (touchedObstacle == null)
+            if (touchedObstacle)
             {
-                EnemyBase attackedEnemy = CheckAttackedEnemy(direction);
-                if (attackedEnemy != null)
-                {
-                    await AttackEnemy(direction, attackedEnemy);
-                    PlaySfx(attackedEnemy.soundOnPlayerHit);
-                }
-                else
-                {
-                    await _player.Roll(direction);
-                    PlaySfx(diceRollAudio);
-                }
-
-                await TryCollectItems();
+                await MakeHalfMove(direction, touchedObstacle);
             }
             else
             {
-                if (touchedObstacle.OnTouch())
-                {
-                    _obstacles = _obstacles.Where(e => e != touchedObstacle).ToArray();
-                    await _player.Roll(direction);
-                    PlaySfx(diceRollAudio);
-                }
-                else
-                {
-                    await _player.HalfRoll(direction);
-                    PlaySfx(diceBlockedAudio);
-                }
-
-                PlaySfx(touchedObstacle.soundOnPlayerHit);
+                await MakeMove(direction);
             }
+        }
+
+        private async UniTask MakeMove(Vector3 direction)
+        {
+            EnemyBase attackedEnemy = CheckAttackedEnemy(direction);
+            if (attackedEnemy)
+            {
+                await AttackEnemy(direction, attackedEnemy);
+                PlaySfx(attackedEnemy.soundOnPlayerHit);
+            }
+            else
+            {
+                await _player.Roll(direction);
+                PlaySfx(diceRollAudio);
+            }
+
+            TryCollectItems();
+        }
+
+        private async UniTask MakeHalfMove(Vector3 direction, ObstacleBase touchedObstacle)
+        {
+            if (touchedObstacle.OnTouch())
+            {
+                _obstacles = _obstacles.Where(e => e != touchedObstacle).ToArray();
+                await _player.Roll(direction);
+                PlaySfx(diceRollAudio);
+            }
+            else
+            {
+                await _player.HalfRoll(direction);
+                PlaySfx(diceBlockedAudio);
+            }
+
+            PlaySfx(touchedObstacle.soundOnPlayerHit);
         }
 
         private void PlaySfx(AudioClip clip)
         {
-            if (clip == null)
+            if (!clip || audioSources.Any(a => !a))
             {
                 return;
             }
@@ -273,7 +289,7 @@ namespace Yarde.GameBoard
             return null;
         }
 
-        private async UniTask TryCollectItems()
+        private void TryCollectItems()
         {
             foreach (CollectibleBase collectible in _collectibles)
             {

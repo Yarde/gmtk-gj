@@ -126,6 +126,8 @@ namespace Yarde
                 {
                     spriteRenderer.DOColor(Color.white, 0.1f);
                 }
+
+                await UniTask.Delay(100);
             }
 
             OnDamage?.Invoke(damage);
