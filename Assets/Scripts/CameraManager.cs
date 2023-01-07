@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using VContainer;
 using Yarde.GameBoard;
 using Yarde.Utils.Extensions;
 
@@ -34,6 +33,13 @@ namespace Yarde
 
         private async void Update()
         {
+            Vector3 destination = _player.Transform.position + offset;
+            Vector3 position = transform.position;
+            Vector3 smoothed = Vector3.Lerp(position, destination, smoothSpeed * Time.deltaTime);
+            position = smoothed.WithY(position.y);
+            transform.position = position;
+            
+            return;
             if (_animating || !Game.Animate)
             {
                 return;
@@ -48,15 +54,6 @@ namespace Yarde
             _animating = false;
         }
 
-        private void FixedUpdate()
-        {
-            Vector3 destination = _player.transform.position + offset;
-            Vector3 position = transform.position;
-            Vector3 smoothed = Vector3.Lerp(position, destination, smoothSpeed * Time.deltaTime);
-            position = smoothed.WithY(position.y);
-            transform.position = position;
-        }
-
         private void OnDestroy()
         {
             _player.OnDamage -= OnPlayerTakeDamage;
@@ -65,7 +62,7 @@ namespace Yarde
         private async void OnPlayerTakeDamage(float damage)
         {
             if (!(damage >= 1)) return;
-            
+
             await transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
 
             for (int i = 0; i < 10; i++)

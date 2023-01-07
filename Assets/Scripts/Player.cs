@@ -24,6 +24,7 @@ namespace Yarde
         public float HealthPoints { get; private set; }
         private float points;
         public Vector2 Size => new Vector2(1, 1);
+        public Transform Transform => transform;
 
         public int TopSide => FindTopSide();
         public event Action OnUpdate;
@@ -47,7 +48,7 @@ namespace Yarde
         private int FindTopSide()
         {
             float maxY = 0f;
-            Transform maxSide = transform;
+            Transform maxSide = Transform;
             foreach (Transform side in sides)
             {
                 if (side.position.y > maxY)
@@ -62,7 +63,7 @@ namespace Yarde
 
         public async UniTask Roll(Vector3 direction)
         {
-            Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
+            Vector3 anchor = Transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
             FullMove(anchor, axis).Forget();
@@ -73,14 +74,14 @@ namespace Yarde
         {
             for (int i = 0; i < 90 / angleIncrement; i++)
             {
-                transform.RotateAround(anchor, axis, angleIncrement);
+                Transform.RotateAround(anchor, axis, angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
             }
         }
 
         public async UniTask HalfRoll(Vector3 direction)
         {
-            Vector3 anchor = transform.position + (Vector3.down + direction) * 0.5f;
+            Vector3 anchor = Transform.position + (Vector3.down + direction) * 0.5f;
             Vector3 axis = Vector3.Cross(Vector3.up, direction);
 
             HalfMove(anchor, axis).Forget();
@@ -89,17 +90,21 @@ namespace Yarde
 
         private async UniTask HalfMove(Vector3 anchor, Vector3 axis)
         {
+            var startingTransform = Transform.position;
+            
             for (int i = 0; i < 15 / angleIncrement; i++)
             {
-                transform.RotateAround(anchor, axis, angleIncrement);
+                Transform.RotateAround(anchor, axis, angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
             }
 
             for (int i = 0; i < 15 / angleIncrement; i++)
             {
-                transform.RotateAround(anchor, axis, -angleIncrement);
+                Transform.RotateAround(anchor, axis, -angleIncrement);
                 await UniTask.Delay(moveDelayInMillis);
             }
+
+            Transform.position = startingTransform;
         }
 
         public async UniTask TakeDamage(float damage)
@@ -108,7 +113,7 @@ namespace Yarde
 
             if (HealthPoints <= 0)
             {
-                deathParticles.transform.position = transform.position;
+                deathParticles.transform.position = Transform.position;
                 deathParticles.Play();
                 await UniTask.Delay(1000);
                 SceneManager.LoadScene("Scenes/EndScreenFail");

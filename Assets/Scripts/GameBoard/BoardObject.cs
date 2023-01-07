@@ -4,7 +4,7 @@ namespace Yarde.GameBoard
 {
     public class BoardObject : MonoBehaviour
     {
-        private const float ERROR_CORRECTION = 0.01f;
+        private const float ERROR_CORRECTION = 0.1f;
         [SerializeField] private Vector2 size = Vector2.one;
         [SerializeField] public AudioClip soundOnPlayerHit;
 

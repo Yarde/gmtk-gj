@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Yarde.Utils.Extensions;
 using Yarde.Utils.Logger;
+using Logger = Yarde.Utils.Logger.Logger;
 
 namespace Yarde.GameBoard
 {
@@ -12,6 +13,8 @@ namespace Yarde.GameBoard
     {
         public static bool Paused;
         public static bool Animate;
+
+        [SerializeField] private LoggerLevel loggerLevel = LoggerLevel.Error;
 
         [Header("Game settings")] [SerializeField]
         private int millisBetweenSyncs = 1000;
@@ -40,6 +43,9 @@ namespace Yarde.GameBoard
 
         private void Awake()
         {
+            Logger.Level = loggerLevel;
+            Application.targetFrameRate = 60;
+
             _obstacles = GetComponentsInChildren<ObstacleBase>();
             _enemies = GetComponentsInChildren<EnemyBase>();
             _collectibles = GetComponentsInChildren<CollectibleBase>();
@@ -119,8 +125,7 @@ namespace Yarde.GameBoard
         {
             this.LogVerbose($"Top side of dice is {_player.TopSide}");
 
-            ObstacleBase touchedObstacle = CheckIfPathIsFree(_player.transform.position + direction, _player.Size);
-            if (touchedObstacle)
+            if (TryGetObstacle(_player.Transform.position + direction, _player.Size, out var touchedObstacle))
             {
                 await MakeHalfMove(direction, touchedObstacle);
             }
@@ -223,14 +228,16 @@ namespace Yarde.GameBoard
                 Vector3 destination = enemy.GetEnemyMove();
                 this.LogVerbose(
                     $"Enemy: {enemy.gameObject.FullPath()} has move? {destination.magnitude > 0f}, {destination}");
-                if (destination.magnitude > 0f)
+                if (destination.sqrMagnitude > 0f)
                 {
-                    if (CheckIfPathIsFree(destination, enemy.Size) != null)
-                    {
-                        this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} blocked, do HalfMove");
-                        enemyMoves.Add(enemy.MakeHalfMove(destination));
-                    }
-                    else if (enemy.CheckCollision(destination, enemy.Size, _player.transform.position, _player.Size))
+                    // todo probably it is not even used, but it is really expensive
+                    // if (TryGetObstacle(destination, enemy.Size, out _))
+                    // {
+                    //     this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} blocked, do HalfMove");
+                    //     enemyMoves.Add(enemy.MakeHalfMove(destination));
+                    // }
+                    // else 
+                    if (enemy.CheckCollision(destination, enemy.Size, _player.Transform.position, _player.Size))
                     {
                         this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} hit player, do HalfMove");
                         enemyMoves.Add(_player.TakeDamage(enemy.Damage));
@@ -250,7 +257,7 @@ namespace Yarde.GameBoard
 
         private EnemyBase CheckAttackedEnemy(Vector3 vector3)
         {
-            Vector3 destination = _player.transform.position + vector3;
+            Vector3 destination = _player.Transform.position + vector3;
             foreach (EnemyBase enemy in _enemies)
             {
                 if (enemy.CheckCollision(destination, _player.Size))
@@ -265,7 +272,7 @@ namespace Yarde.GameBoard
 
         private bool IsExitLevel(Vector3 vector3)
         {
-            Vector3 destination = _player.transform.position + vector3;
+            Vector3 destination = _player.Transform.position + vector3;
             if (!_exitLevel || !_exitLevel.CheckCollision(destination, _player.Size))
             {
                 return false;
@@ -275,25 +282,27 @@ namespace Yarde.GameBoard
             return true;
         }
 
-        private ObstacleBase CheckIfPathIsFree(Vector3 destination, Vector2 size)
+        private bool TryGetObstacle(Vector3 destination, Vector2 size, out ObstacleBase obstacle)
         {
-            foreach (ObstacleBase obstacle in _obstacles)
+            obstacle = null;
+            foreach (ObstacleBase o in _obstacles)
             {
-                if (obstacle.CheckCollision(destination, size))
+                if (o.CheckCollision(destination, size))
                 {
-                    this.Log($"Path Blocked by Obstacle: {obstacle.name}");
-                    return obstacle;
+                    this.Log($"Path Blocked by Obstacle: {o.name}");
+                    obstacle = o;
+                    return true;
                 }
             }
 
-            return null;
+            return false;
         }
 
         private void TryCollectItems()
         {
             foreach (CollectibleBase collectible in _collectibles)
             {
-                if (collectible.CheckCollision(_player.transform.position, _player.Size))
+                if (collectible.CheckCollision(_player.Transform.position, _player.Size))
                 {
                     this.Log($"Collectible found: {collectible.name}");
                     _player.CollectItem(collectible.Collect());

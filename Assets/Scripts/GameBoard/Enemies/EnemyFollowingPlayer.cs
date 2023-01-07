@@ -21,7 +21,7 @@ namespace Yarde
             _turn++;
             if (_turn % turnsToMove - 1 == 0)
             {
-                _targetPosition = _player.transform.position;
+                _targetPosition = _player.Transform.position;
                 Vector3 delta = _targetPosition - transform.position;
                 if (delta.magnitude > distanceToActivate)
                 {
