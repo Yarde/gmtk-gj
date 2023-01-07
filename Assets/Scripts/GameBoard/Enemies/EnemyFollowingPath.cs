@@ -90,28 +90,30 @@ namespace Yarde.GameBoard.Enemies
 
         public override async UniTask MakeMove(Vector3 direction)
         {
-            if (gameObject == null && !ReferenceEquals(gameObject, null))
+            var cancellationToken = this.GetCancellationTokenOnDestroy();
+            if (cancellationToken.IsCancellationRequested)
             {
                 return;
             }
             CheckWaypoint();
-            await transform.DOMove(direction, moveDelayInSec);
+            await transform.DOMove(direction, moveDelayInSec).WithCancellation(cancellationToken);
         }
 
         public override async UniTask MakeHalfMove(Vector3 direction)
         {
-            if (gameObject == null && !ReferenceEquals(gameObject, null))
+            var cancellationToken = this.GetCancellationTokenOnDestroy();
+            if (cancellationToken.IsCancellationRequested)
             {
                 return;
             }
             Vector3 prevPosition = transform.position;
             Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
-            await transform.DOMove(newDirection, moveDelayInSec / 2);
-            if ( gameObject == null && !ReferenceEquals(gameObject, null))
+            await transform.DOMove(newDirection, moveDelayInSec / 2).WithCancellation(cancellationToken);
+            if (cancellationToken.IsCancellationRequested)
             {
                 return;
             }
-            await transform.DOMove(prevPosition, moveDelayInSec / 2);
+            await transform.DOMove(prevPosition, moveDelayInSec / 2).WithCancellation(cancellationToken);
         }
     }
 }
