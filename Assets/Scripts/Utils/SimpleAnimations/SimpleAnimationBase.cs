@@ -35,8 +35,7 @@ namespace Yarde.Utils.SimpleAnimations
                 await PlayEffect();
             }
         }
-        
+
         protected abstract UniTask PlayEffect();
     }
 }
-

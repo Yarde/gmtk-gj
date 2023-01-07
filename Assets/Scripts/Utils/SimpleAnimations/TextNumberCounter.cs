@@ -10,7 +10,7 @@ namespace Yarde.Utils.SimpleAnimations
     public class TextNumberCounter : MonoBehaviour
     {
         private const float EPS = 0.01f;
-        
+
         [SerializeField] private string textFormat = "{0}";
         [SerializeField] private float counterDuration = 0.5f;
         [SerializeField] private Ease counterEase = Ease.OutQuad;
@@ -43,11 +43,13 @@ namespace Yarde.Utils.SimpleAnimations
                 if (_valueShown != value)
                 {
                     _valueShown = value;
-                    Target.text = abbreviateText ? string.Format(textFormat, _valueShown.Value.AbbreviateNumber()) : string.Format(textFormat, _valueShown);
+                    Target.text = abbreviateText
+                        ? string.Format(textFormat, _valueShown.Value.AbbreviateNumber())
+                        : string.Format(textFormat, _valueShown);
                 }
             }
         }
-        
+
         private void Awake()
         {
             if (_target == null)
@@ -58,7 +60,7 @@ namespace Yarde.Utils.SimpleAnimations
 
         public void InitNewValue(long newValue) => SetNewValue(newValue, 0.0f).Forget();
         public void SetNewValue(long newValue) => SetNewValue(newValue, counterDuration, counterEase).Forget();
-        
+
         public async UniTask SetNewValue(long newValue, float duration, Ease ease = Ease.Linear)
         {
             if (_targetValue != newValue)
@@ -67,7 +69,7 @@ namespace Yarde.Utils.SimpleAnimations
                 {
                     _valueShownTween.Kill();
                 }
-                
+
                 _targetValue = newValue;
                 if (duration < EPS)
                 {
@@ -75,7 +77,8 @@ namespace Yarde.Utils.SimpleAnimations
                 }
                 else
                 {
-                    await (_valueShownTween = DOTween.To(() => ValueShown, x => ValueShown = x, _targetValue.Value, duration).SetEase(ease));
+                    await (_valueShownTween = DOTween
+                        .To(() => ValueShown, x => ValueShown = x, _targetValue.Value, duration).SetEase(ease));
                 }
             }
         }

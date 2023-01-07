@@ -104,12 +104,15 @@ namespace Yarde.Utils.Extensions
                 {
                     return v.x;
                 }
+
                 return v.z;
             }
+
             if (Mathf.Abs(v.y) >= Mathf.Abs(v.z))
             {
                 return v.y;
             }
+
             return v.z;
         }
 
@@ -121,12 +124,15 @@ namespace Yarde.Utils.Extensions
                 {
                     return Mathf.Abs(v.x);
                 }
+
                 return Mathf.Abs(v.z);
             }
+
             if (Mathf.Abs(v.y) >= Mathf.Abs(v.z))
             {
                 return Mathf.Abs(v.y);
             }
+
             return Mathf.Abs(v.z);
         }
 

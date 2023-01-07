@@ -1,23 +1,28 @@
 using System;
 using UnityEngine;
 
-namespace Yarde.Utils.Logger 
+namespace Yarde.Utils.Logger
 {
-    internal class EditorLogger : ILogger 
+    internal class EditorLogger : ILogger
     {
-        public void Log(LoggerLevel level, LogSettingsAttribute settings, string message) {
+        public void Log(LoggerLevel level, LogSettingsAttribute settings, string message)
+        {
             string composedTag;
-            if (!string.IsNullOrWhiteSpace(settings.Tag)) {
-                composedTag = !string.IsNullOrEmpty(settings.Color) ?
-                    $"[<color={settings.Color}><b>{settings.Tag}</b></color>] → " :
-                    $"[<b>{settings.Tag}</b>] → ";
-            } else {
+            if (!string.IsNullOrWhiteSpace(settings.Tag))
+            {
+                composedTag = !string.IsNullOrEmpty(settings.Color)
+                    ? $"[<color={settings.Color}><b>{settings.Tag}</b></color>] → "
+                    : $"[<b>{settings.Tag}</b>] → ";
+            }
+            else
+            {
                 composedTag = string.Empty;
             }
 
             var composedMessage = $"{composedTag}{message}";
-				
-            switch (level) {
+
+            switch (level)
+            {
                 case LoggerLevel.Verbose:
                     Debug.Log(composedMessage);
                     break;

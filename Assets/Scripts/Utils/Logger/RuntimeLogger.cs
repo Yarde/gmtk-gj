@@ -2,13 +2,17 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Yarde.Utils.Logger {
+namespace Yarde.Utils.Logger
+{
     [PublicAPI]
-    internal class RuntimeLogger : ILogger {
-        public void Log(LoggerLevel level, LogSettingsAttribute settings, string message) {
+    internal class RuntimeLogger : ILogger
+    {
+        public void Log(LoggerLevel level, LogSettingsAttribute settings, string message)
+        {
             var composedMessage = !string.IsNullOrWhiteSpace(settings.Tag) ? $"[{settings.Tag}] → {message}" : message;
 
-            switch (level) {
+            switch (level)
+            {
                 case LoggerLevel.Verbose:
                     Debug.Log(composedMessage);
                     break;

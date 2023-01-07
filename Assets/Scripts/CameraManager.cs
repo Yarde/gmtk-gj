@@ -12,7 +12,7 @@ namespace Yarde
         [SerializeField] private float smoothSpeed = 10f;
         [SerializeField] private Vector3 offset;
         [SerializeField] private Light light;
-        
+
         [SerializeField] private float shakeDuration;
         [SerializeField] private float shakeStrength;
         [SerializeField] private float lightChangeTimeInSec = 0.4f;
@@ -41,9 +41,10 @@ namespace Yarde
 
             _animating = true;
             float lifeLoss = _player.HealthPoints / _player.MaxHealthPoints;
-            await light.DOColor(new Color(1f, lifeLoss, lifeLoss), lightChangeTimeInSec/2f);
-            await light.DOColor(Color.white, lightChangeTimeInSec/2f);
-            await UniTask.Delay((int)(delayBetweenLightsInSec.ToMilliseconds() / (delayBetweenLightsModifier / Mathf.Max(0.1f, lifeLoss))));
+            await light.DOColor(new Color(1f, lifeLoss, lifeLoss), lightChangeTimeInSec / 2f);
+            await light.DOColor(Color.white, lightChangeTimeInSec / 2f);
+            await UniTask.Delay((int)(delayBetweenLightsInSec.ToMilliseconds() /
+                                      (delayBetweenLightsModifier / Mathf.Max(0.1f, lifeLoss))));
             _animating = false;
         }
 
@@ -66,12 +67,13 @@ namespace Yarde
             if (damage >= 1)
             {
                 transform.DOShakeRotation(shakeDuration, shakeStrength * (damage - 0.5f));
-                
+
                 for (int i = 0; i < 10; i++)
                 {
                     _camera.orthographicSize -= 0.1f;
                     await UniTask.Delay(5);
                 }
+
                 for (int i = 0; i < 10; i++)
                 {
                     _camera.orthographicSize += 0.1f;

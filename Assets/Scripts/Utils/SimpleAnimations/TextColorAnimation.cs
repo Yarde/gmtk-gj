@@ -26,7 +26,7 @@ namespace Yarde.Utils.SimpleAnimations
         {
             await _textComponent.DOColor(colorEnd, duration);
             await _textComponent.DOColor(colorStart, duration);
-            
+
             await UniTask.Delay(Mathf.Max(delay - duration * 2, 0f).ToMilliseconds());
         }
     }

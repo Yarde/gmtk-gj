@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using VContainer;
 using Yarde.Utils.Extensions;
 using Yarde.Utils.Logger;
 
@@ -13,21 +13,21 @@ namespace Yarde.GameBoard
     {
         public static bool Paused;
         public static bool Animate;
-        [Header("Game settings")]
-        [SerializeField] private int millisBetweenSyncs = 1000;
+
+        [Header("Game settings")] [SerializeField]
+        private int millisBetweenSyncs = 1000;
+
         [SerializeField] private float timeDamage = 1;
         [SerializeField] private bool autoEnemyMove;
         [SerializeField] private bool timeLoseLive = true;
-        [SerializeField] private bool moveLoseLive;
         [SerializeField] private bool animateCamera;
         [SerializeField] private List<AudioSource> audioSources;
         [SerializeField] private AudioClip diceRollAudio;
         [SerializeField] private AudioClip diceBlockedAudio;
         [SerializeField] private AudioClip diceHitAudio;
         [SerializeField] private AudioClip levelWinAudio;
-        
-        [Header("Particles")]
-        [SerializeField] private ParticleSystem enemyKillParticle;
+
+        [Header("Particles")] [SerializeField] private ParticleSystem enemyKillParticle;
         private CollectibleBase[] _collectibles;
         private EnemyBase[] _enemies;
         private ExitLevel _exitLevel;
@@ -61,6 +61,7 @@ namespace Yarde.GameBoard
             {
                 return;
             }
+
             await GameTick();
         }
 
@@ -82,32 +83,36 @@ namespace Yarde.GameBoard
             {
                 await UniTask.Delay(millisBetweenSyncs);
             }
+
             _waiting = false;
         }
 
-        private async UniTask MakeTurn(Vector3 arg)
+        private async UniTask MakeTurn(Vector3 direction)
         {
-            await MakePlayerTurn(arg);
+            await CheckWin(direction);
+            await MakePlayerTurn(direction);
             if (!autoEnemyMove)
             {
                 await MakeEnemyTurn();
             }
+
             _player.AddPoints(1);
-            if (moveLoseLive)
-            {
-                await _player.TakeDamage(timeDamage);
-            }
         }
 
-        private async UniTask MakePlayerTurn(Vector3 direction)
+        private async UniTask CheckWin(Vector3 direction)
         {
-            this.LogVerbose($"Top side of dice is {_player.TopSide}");
             if (IsExitLevel(direction))
             {
                 await UniTask.WhenAll(_exitLevel.LoadNextLevel(), _player.Roll(direction));
                 PlaySfx(levelWinAudio);
                 return;
             }
+        }
+
+        private async UniTask MakePlayerTurn(Vector3 direction)
+        {
+            this.LogVerbose($"Top side of dice is {_player.TopSide}");
+
             ObstacleBase touchedObstacle = CheckIfPathIsFree(_player.transform.position + direction, _player.Size);
             if (touchedObstacle == null)
             {
@@ -122,6 +127,7 @@ namespace Yarde.GameBoard
                     await _player.Roll(direction);
                     PlaySfx(diceRollAudio);
                 }
+
                 await TryCollectItems();
             }
             else
@@ -137,6 +143,7 @@ namespace Yarde.GameBoard
                     await _player.HalfRoll(direction);
                     PlaySfx(diceBlockedAudio);
                 }
+
                 PlaySfx(touchedObstacle.soundOnPlayerHit);
             }
         }
@@ -147,7 +154,7 @@ namespace Yarde.GameBoard
             {
                 return;
             }
-            
+
             audioSources[_currentSource].clip = clip;
             audioSources[_currentSource].Play();
 
@@ -198,7 +205,8 @@ namespace Yarde.GameBoard
             foreach (EnemyBase enemy in _enemies)
             {
                 Vector3 destination = enemy.GetEnemyMove();
-                this.LogVerbose($"Enemy: {enemy.gameObject.FullPath()} has move? {destination.magnitude > 0f}, {destination}");
+                this.LogVerbose(
+                    $"Enemy: {enemy.gameObject.FullPath()} has move? {destination.magnitude > 0f}, {destination}");
                 if (destination.magnitude > 0f)
                 {
                     if (CheckIfPathIsFree(destination, enemy.Size) != null)
@@ -246,6 +254,7 @@ namespace Yarde.GameBoard
             {
                 return false;
             }
+
             this.Log("Exit Level");
             return true;
         }
@@ -271,7 +280,7 @@ namespace Yarde.GameBoard
                 if (collectible.CheckCollision(_player.transform.position, _player.Size))
                 {
                     this.Log($"Collectible found: {collectible.name}");
-                    await _player.CollectItem(collectible.Collect());
+                    _player.CollectItem(collectible.Collect());
                 }
             }
         }

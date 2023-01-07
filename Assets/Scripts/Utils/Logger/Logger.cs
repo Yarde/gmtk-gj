@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 
 namespace Yarde.Utils.Logger
 {
-
     public static class Logger
     {
         [PublicAPI] public static ILogger ActiveLogger { private get; set; }
@@ -82,6 +81,7 @@ namespace Yarde.Utils.Logger
             {
                 attribute.Tag = caller.GetType().Name;
             }
+
             return attribute ?? new LogSettingsAttribute(caller.GetType().Name);
         }
     }

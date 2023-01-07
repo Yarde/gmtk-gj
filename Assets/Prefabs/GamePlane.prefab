@@ -183,10 +183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   millisBetweenSyncs: 387
-  timeDamage: 0.387
+  timeDamage: 0.15
   autoEnemyMove: 1
   timeLoseLive: 1
-  moveLoseLive: 0
   animateCamera: 1
   audioSources:
   - {fileID: 7967647232026735769}
@@ -199,6 +198,8 @@ MonoBehaviour:
   diceHitAudio: {fileID: 8300000, guid: 7bebf2f03055bb94c8a48def0e28b5b1, type: 3}
   levelWinAudio: {fileID: 8300000, guid: 4e8e05b700fda7048b89469e71cf2d7f, type: 3}
   enemyKillParticle: {fileID: 880230033286364103}
+  _inputManager: {fileID: 0}
+  _player: {fileID: 0}
 --- !u!82 &7967647232026735769
 AudioSource:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ namespace Yarde.Utils.Extensions
             anchorMin.y = y;
             return transform.anchorMin = anchorMin;
         }
-        
+
         public static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
         {
             var dir = point - pivot;
@@ -66,10 +66,11 @@ namespace Yarde.Utils.Extensions
             point = dir + pivot;
             return point;
         }
-        
+
         public static void DestroyAllChildren(this Transform transform)
         {
-            foreach (Transform child in transform) {
+            foreach (Transform child in transform)
+            {
                 Object.Destroy(child.gameObject);
             }
         }

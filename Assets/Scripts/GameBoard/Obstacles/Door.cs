@@ -25,6 +25,7 @@ namespace Yarde.GameBoard
                 Destroy(gameObject);
                 return true;
             }
+
             return false;
         }
     }

@@ -15,7 +15,7 @@ namespace Yarde
         [SerializeField] private float levelLoadDelay = 1f;
         [SerializeField] private float animationDelay = 0.1f;
         [SerializeField] private float animationDuration = 0.1f;
-        [SerializeField] private Color shadowColor = new Color(96,96,96,255);
+        [SerializeField] private Color shadowColor = new Color(96, 96, 96, 255);
         [SerializeField] private Image backgroundImage;
         [SerializeField] private Image titleImage;
         [SerializeField] private List<Image> screenImages;
@@ -24,6 +24,7 @@ namespace Yarde
         {
             HideImages();
         }
+
         private async UniTask Start()
         {
             await ShowTitle();
@@ -36,7 +37,8 @@ namespace Yarde
             backgroundImage.DOColor(shadowColor, animationDuration);
             titleImage.DOFade(1f, animationDuration);
             await UniTask.Delay(TimeSpan.FromSeconds(animationDelay));
-        } 
+        }
+
         private void HideImages()
         {
             titleImage.DOFade(0f, 0f);
@@ -45,7 +47,6 @@ namespace Yarde
 
         private async UniTask ShowUI()
         {
-            
             screenImages.ForEach(i => i.DOFade(1f, animationDuration));
             await UniTask.Delay(TimeSpan.FromSeconds(animationDelay));
         }

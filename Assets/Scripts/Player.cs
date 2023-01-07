@@ -19,24 +19,24 @@ namespace Yarde
         [SerializeField] private ParticleSystem deathParticles;
 
         [SerializeField] private List<Transform> sides;
-        private List<SpriteRenderer> _spriteRenderers = new List<SpriteRenderer>();
+        private readonly List<SpriteRenderer> _spriteRenderers = new List<SpriteRenderer>();
 
         public float HealthPoints { get; private set; }
-        public float Points { get; private set; }
+        private float points;
         public Vector2 Size => new Vector2(1, 1);
 
         public int TopSide => FindTopSide();
-        public Action OnUpdate { get; set; }
-        public Action OnKill { get; set; }
-        public Action<float> OnDamage { get; set; }
-        public Action OnItemCollected { get; set; }
-        public float MaxHealthPoints { get; set; }
+        public event Action OnUpdate;
+        public event Action OnKill;
+        public event Action<float> OnDamage;
+        public event Action OnItemCollected;
+        public float MaxHealthPoints { get; private set; }
 
         private void Awake()
         {
             HealthPoints = startingHealth;
             MaxHealthPoints = startingHealth;
-            Points = 0;
+            points = 0;
 
             foreach (Transform side in sides)
             {
@@ -113,39 +113,42 @@ namespace Yarde
                 await UniTask.Delay(1000);
                 SceneManager.LoadScene("Scenes/EndScreenFail");
             }
+
             if (damage >= 1)
             {
                 foreach (SpriteRenderer spriteRenderer in _spriteRenderers)
                 {
                     spriteRenderer.DOColor(Color.red, 0.1f);
                 }
+
                 await UniTask.Delay(100);
                 foreach (SpriteRenderer spriteRenderer in _spriteRenderers)
                 {
                     spriteRenderer.DOColor(Color.white, 0.1f);
                 }
             }
+
             OnDamage?.Invoke(damage);
             OnUpdate?.Invoke();
         }
 
         public void AddPoints(int points)
         {
-            Points += points;
+            this.points += points;
             OnUpdate?.Invoke();
         }
 
         public void OnEnemyKilled(float enemyLevel)
         {
             HealthPoints += enemyLevel * hpGainMultiplier;
-            Points += enemyLevel;
+            points += enemyLevel;
             OnKill?.Invoke();
         }
 
-        public async UniTask CollectItem(CollectibleReward collect)
+        public void CollectItem(CollectibleReward collect)
         {
             HealthPoints += collect.hearts;
-            Points += collect.points;
+            points += collect.points;
             angleIncrement += collect.speed;
             OnItemCollected?.Invoke();
         }

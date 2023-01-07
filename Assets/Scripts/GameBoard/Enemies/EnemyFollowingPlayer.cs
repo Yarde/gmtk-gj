@@ -27,6 +27,7 @@ namespace Yarde
                 {
                     return Vector3.zero;
                 }
+
                 Vector3 perpendicularTargetPosition = _targetPosition;
                 if (Mathf.Abs(delta.x) - Mathf.Abs(delta.z) > 0)
                 {
@@ -36,6 +37,7 @@ namespace Yarde
                 {
                     perpendicularTargetPosition.x = transform.position.x;
                 }
+
                 return Vector3.MoveTowards(transform.position, perpendicularTargetPosition, movementSpeed);
             }
 
@@ -54,6 +56,7 @@ namespace Yarde
             {
                 return;
             }
+
             await transform.DOMove(direction, moveDelayInSec);
         }
 
@@ -64,6 +67,7 @@ namespace Yarde
             {
                 return;
             }
+
             Vector3 prevPosition = transform.position;
             Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec / 2).WithCancellation(cancellationToken);
@@ -71,6 +75,7 @@ namespace Yarde
             {
                 return;
             }
+
             await transform.DOMove(prevPosition, moveDelayInSec / 2).WithCancellation(cancellationToken);
         }
     }

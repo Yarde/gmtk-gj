@@ -9,7 +9,7 @@ namespace Yarde.Utils.Extensions
         {
             return UniTask.WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName(stateName));
         }
-        
+
         public static UniTask WaitForStateChange(this Animator animator)
         {
             int name = animator.GetCurrentAnimatorStateInfo(0).shortNameHash;

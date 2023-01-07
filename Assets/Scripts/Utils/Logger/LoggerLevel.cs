@@ -1,5 +1,6 @@
-namespace Yarde.Utils.Logger {
-    public enum LoggerLevel 
+namespace Yarde.Utils.Logger
+{
+    public enum LoggerLevel
     {
         Verbose = 0,
         Info = 1,

@@ -15,11 +15,11 @@ namespace Yarde.Utils.SimpleAnimations
         [SerializeField] private Ease easeOut = Ease.InCubic;
 
         private Transform _transform;
-        
+
         protected override void Awake()
         {
             _transform = GetComponent<RectTransform>();
-            
+
             base.Awake();
         }
 

@@ -7,6 +7,7 @@ namespace Yarde.Utils.Extensions
     public static class FloatExtensions
     {
         public static int ToMilliseconds(this float seconds) => Mathf.RoundToInt(seconds * 1000);
+
         public static string AbbreviateNumber(this int num)
         {
             return AbbreviateNumber((long)num);
@@ -27,22 +28,27 @@ namespace Yarde.Utils.Extensions
             {
                 return (num / 10000000000D).ToString("0") + "B";
             }
+
             if (num >= 1000000000)
             {
                 return (num / 1000000000D).ToString("0.#") + "B";
             }
+
             if (num >= 10000000)
             {
                 return (num / 1000000D).ToString("0") + "M";
             }
+
             if (num >= 1000000)
             {
                 return (num / 1000000D).ToString("0.#") + "M";
             }
+
             if (num >= 10000)
             {
                 return (num / 1000D).ToString("0.#") + "K";
             }
+
             return num.ToString("#,0");
         }
     }

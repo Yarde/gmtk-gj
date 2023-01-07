@@ -13,11 +13,11 @@ namespace Yarde.Utils.SimpleAnimations
             LeftToRight,
             PingPong
         }
-        
+
         [SerializeField] private InfiniteSliderType type = InfiniteSliderType.LeftToRight;
         [SerializeField] private float duration = 3.0f;
         [SerializeField] private Ease ease = Ease.Linear;
-        
+
         private Slider _slider;
 
         protected override void Awake()
@@ -31,7 +31,7 @@ namespace Yarde.Utils.SimpleAnimations
         {
             await _slider.DOValue(1f, duration).SetEase(ease);
 
-            switch(type)
+            switch (type)
             {
                 case InfiniteSliderType.LeftToRight:
                     _slider.value = 0f;
@@ -43,4 +43,3 @@ namespace Yarde.Utils.SimpleAnimations
         }
     }
 }
-

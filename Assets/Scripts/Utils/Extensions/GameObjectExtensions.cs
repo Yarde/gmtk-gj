@@ -6,7 +6,8 @@ namespace Yarde.Utils.Extensions
 {
     public static class GameObjectExtensions
     {
-        public static void EnableComponentsInChildren<TComponent>(this GameObject gameObject, Predicate<TComponent> condition = default) where TComponent : MonoBehaviour
+        public static void EnableComponentsInChildren<TComponent>(this GameObject gameObject,
+            Predicate<TComponent> condition = default) where TComponent : MonoBehaviour
         {
             foreach (TComponent component in gameObject.GetComponentsInChildren<TComponent>())
             {
@@ -17,7 +18,8 @@ namespace Yarde.Utils.Extensions
             }
         }
 
-        public static void DisableComponentsInChildren<TComponent>(this GameObject gameObject, Predicate<TComponent> condition = default) where TComponent : MonoBehaviour
+        public static void DisableComponentsInChildren<TComponent>(this GameObject gameObject,
+            Predicate<TComponent> condition = default) where TComponent : MonoBehaviour
         {
             foreach (TComponent component in gameObject.GetComponentsInChildren<TComponent>())
             {
@@ -27,7 +29,7 @@ namespace Yarde.Utils.Extensions
                 }
             }
         }
-        
+
         public static void Destroy(GameObject go)
         {
             if (Application.isPlaying)
@@ -47,10 +49,12 @@ namespace Yarde.Utils.Extensions
             {
                 component = go.AddComponent<T>();
             }
+
             return component;
         }
 
-        public static bool DestroyComponent<TComponent>(this GameObject go, bool forceImmediate = false) where TComponent : Component
+        public static bool DestroyComponent<TComponent>(this GameObject go, bool forceImmediate = false)
+            where TComponent : Component
         {
             TComponent component = go.GetComponent<TComponent>();
             if (component)
@@ -66,7 +70,7 @@ namespace Yarde.Utils.Extensions
 
                 return true;
             }
-            
+
             return false;
         }
 
@@ -74,12 +78,12 @@ namespace Yarde.Utils.Extensions
         {
             return DestroyComponent<TComponent>(other.gameObject);
         }
-        
+
         public static bool IsPrefab(this GameObject go)
         {
             return string.IsNullOrEmpty(go.scene.name);
         }
-        
+
         public static string FullPath(this GameObject go)
         {
             if (go.transform.parent != null)
@@ -91,7 +95,7 @@ namespace Yarde.Utils.Extensions
                 return $"/{go.name}";
             }
         }
-        
+
         public static T GetProvider<T>(this GameObject gameObject, T providerNone)
         {
             T provider = gameObject.GetComponent<T>() ?? gameObject.GetComponentInChildren<T>();

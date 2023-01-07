@@ -10,7 +10,8 @@ namespace Yarde.GameBoard
 
         public Vector2 Size => size;
 
-        public bool CheckCollision(Vector3 otherPosition, Vector2 otherSize) => CheckCollision(transform.position, size, otherPosition, otherSize);
+        public bool CheckCollision(Vector3 otherPosition, Vector2 otherSize) =>
+            CheckCollision(transform.position, size, otherPosition, otherSize);
 
         public bool CheckCollision(Vector3 thisPosition, Vector2 thisSize, Vector3 otherPosition, Vector2 otherSize)
         {

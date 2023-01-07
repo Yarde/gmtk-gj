@@ -7,9 +7,7 @@ namespace Yarde.GameBoard
 {
     public class ExitLevel : BoardObject
     {
-
         [SerializeField] private float levelLoadDelay = 1f;
-
 
         public async UniTask LoadNextLevel()
         {

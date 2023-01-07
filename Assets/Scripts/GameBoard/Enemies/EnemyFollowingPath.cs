@@ -95,6 +95,7 @@ namespace Yarde.GameBoard.Enemies
             {
                 return;
             }
+
             CheckWaypoint();
             await transform.DOMove(direction, moveDelayInSec).WithCancellation(cancellationToken);
         }
@@ -106,6 +107,7 @@ namespace Yarde.GameBoard.Enemies
             {
                 return;
             }
+
             Vector3 prevPosition = transform.position;
             Vector3 newDirection = Vector3.MoveTowards(prevPosition, direction, 0.5f);
             await transform.DOMove(newDirection, moveDelayInSec / 2).WithCancellation(cancellationToken);
@@ -113,6 +115,7 @@ namespace Yarde.GameBoard.Enemies
             {
                 return;
             }
+
             await transform.DOMove(prevPosition, moveDelayInSec / 2).WithCancellation(cancellationToken);
         }
     }

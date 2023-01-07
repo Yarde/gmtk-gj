@@ -142,7 +142,8 @@ namespace Yarde.Utils.Extensions
             return result;
         }
 
-        public static TScore Max<TScore, TItem>(this List<TItem> items, Func<TItem, TScore> scoreFunc, out TItem maxItem) where TScore : IComparable
+        public static TScore Max<TScore, TItem>(this List<TItem> items, Func<TItem, TScore> scoreFunc,
+            out TItem maxItem) where TScore : IComparable
         {
             if (items.Count == 0)
             {
@@ -175,6 +176,7 @@ namespace Yarde.Utils.Extensions
                 {
                     return index;
                 }
+
                 ++index;
             }
 
@@ -190,6 +192,7 @@ namespace Yarde.Utils.Extensions
                 {
                     return index;
                 }
+
                 ++index;
             }
 
@@ -229,11 +232,14 @@ namespace Yarde.Utils.Extensions
                 int k = rng.Next(start, n + 1);
                 (items[k], items[n]) = (items[n], items[k]);
             }
+
             return items;
         }
 
         public static T Random<T>(this IReadOnlyList<T> items) => Random(items, new Random(Environment.TickCount));
-        public static T Random<T>(this IReadOnlyList<T> items, Random rng) => items.Count == 0 ? default : items[rng.Next(items.Count)];
+
+        public static T Random<T>(this IReadOnlyList<T> items, Random rng) =>
+            items.Count == 0 ? default : items[rng.Next(items.Count)];
 
         public static List<T> Resize<T>(this List<T> items, int count)
         {
